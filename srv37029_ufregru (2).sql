@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
+-- version 4.5.0.2
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Июл 05 2017 г., 04:02
--- Версия сервера: 10.1.9-MariaDB
--- Версия PHP: 5.6.3
+-- Время создания: Июл 05 2017 г., 14:07
+-- Версия сервера: 10.0.17-MariaDB
+-- Версия PHP: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -40,7 +40,7 @@ CREATE TABLE `srv37029_ufregru_active_users` (
 --
 
 INSERT INTO `srv37029_ufregru_active_users` (`internalKey`, `username`, `lasthit`, `id`, `action`, `ip`) VALUES
-(1, 'admin', 1499197836, NULL, '76', '127.0.0.1');
+(1, 'admin', 1499258270, 14, '78', '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -3282,7 +3282,41 @@ INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `u
 (5747, 1499197361, 1, 'admin', 78, '26', 'header', 'Editing Chunk (HTML Snippet)'),
 (5748, 1499197797, 1, 'admin', 76, '-', '-', 'Element management'),
 (5749, 1499197799, 1, 'admin', 78, '12', 'contacts', 'Editing Chunk (HTML Snippet)'),
-(5750, 1499197836, 1, 'admin', 76, '-', '-', 'Element management');
+(5750, 1499197836, 1, 'admin', 76, '-', '-', 'Element management'),
+(5751, 1499232817, 1, 'admin', 76, '-', '-', 'Element management'),
+(5752, 1499232821, 1, 'admin', 78, '12', 'contacts', 'Editing Chunk (HTML Snippet)'),
+(5753, 1499232909, 1, 'admin', 79, '12', 'contacts', 'Saving Chunk (HTML Snippet)'),
+(5754, 1499232909, 1, 'admin', 76, '-', '-', 'Element management'),
+(5755, 1499232938, 1, 'admin', 78, '26', 'header', 'Editing Chunk (HTML Snippet)'),
+(5756, 1499232942, 1, 'admin', 76, '-', '-', 'Element management'),
+(5757, 1499232948, 1, 'admin', 78, '35', 'contacts_home', 'Editing Chunk (HTML Snippet)'),
+(5758, 1499232955, 1, 'admin', 79, '35', 'contacts_home', 'Saving Chunk (HTML Snippet)'),
+(5759, 1499232955, 1, 'admin', 76, '-', '-', 'Element management'),
+(5760, 1499234961, 1, 'admin', 78, '35', 'contacts_home', 'Editing Chunk (HTML Snippet)'),
+(5761, 1499235105, 1, 'admin', 79, '35', 'contacts_home', 'Saving Chunk (HTML Snippet)'),
+(5762, 1499235105, 1, 'admin', 76, '-', '-', 'Element management'),
+(5763, 1499235257, 1, 'admin', 78, '35', 'contacts_home', 'Editing Chunk (HTML Snippet)'),
+(5764, 1499235967, 1, 'admin', 79, '35', 'contacts_home', 'Saving Chunk (HTML Snippet)'),
+(5765, 1499235967, 1, 'admin', 78, '35', 'contacts_home', 'Editing Chunk (HTML Snippet)'),
+(5766, 1499236068, 1, 'admin', 79, '35', 'contacts_home', 'Saving Chunk (HTML Snippet)'),
+(5767, 1499236068, 1, 'admin', 78, '35', 'contacts_home', 'Editing Chunk (HTML Snippet)'),
+(5768, 1499237021, 1, 'admin', 79, '35', 'contacts_home', 'Saving Chunk (HTML Snippet)'),
+(5769, 1499237021, 1, 'admin', 78, '35', 'contacts_home', 'Editing Chunk (HTML Snippet)'),
+(5770, 1499238413, 1, 'admin', 79, '35', 'contacts_home', 'Saving Chunk (HTML Snippet)'),
+(5771, 1499238413, 1, 'admin', 78, '35', 'contacts_home', 'Editing Chunk (HTML Snippet)'),
+(5772, 1499242351, 1, 'admin', 79, '35', 'contacts_home', 'Saving Chunk (HTML Snippet)'),
+(5773, 1499242351, 1, 'admin', 78, '35', 'contacts_home', 'Editing Chunk (HTML Snippet)'),
+(5774, 1499244513, 1, 'admin', 79, '35', 'contacts_home', 'Saving Chunk (HTML Snippet)'),
+(5775, 1499244513, 1, 'admin', 78, '35', 'contacts_home', 'Editing Chunk (HTML Snippet)'),
+(5776, 1499250083, 1, 'admin', 79, '35', 'contacts_home', 'Saving Chunk (HTML Snippet)'),
+(5777, 1499250083, 1, 'admin', 78, '35', 'contacts_home', 'Editing Chunk (HTML Snippet)'),
+(5778, 1499250084, 1, 'admin', 76, '-', '-', 'Element management'),
+(5779, 1499250088, 1, 'admin', 78, '14', 'footer', 'Editing Chunk (HTML Snippet)'),
+(5780, 1499250141, 1, 'admin', 79, '14', 'footer', 'Saving Chunk (HTML Snippet)'),
+(5781, 1499250141, 1, 'admin', 76, '-', '-', 'Element management'),
+(5782, 1499258221, 1, 'admin', 78, '14', 'footer', 'Editing Chunk (HTML Snippet)'),
+(5783, 1499258270, 1, 'admin', 79, '14', 'footer', 'Saving Chunk (HTML Snippet)'),
+(5784, 1499258270, 1, 'admin', 78, '14', 'footer', 'Editing Chunk (HTML Snippet)');
 
 -- --------------------------------------------------------
 
@@ -3523,11 +3557,11 @@ INSERT INTO `srv37029_ufregru_site_htmlsnippets` (`id`, `name`, `description`, `
 (9, 'column_item', '', 0, 9, 0, '<div class="buklet">\r\n	<a href="[~3~]">Заказать</a>\r\n	<p>[+pagetitle+]</p>\r\n	[+content+]\r\n	<p class="price_item">[+price+]</p>\r\n</div>', 0),
 (10, 'column_rekl', '', 0, 9, 0, ' <div>\r\n	 <p>[+longtitle+]</p>\r\n	 [+content+]\r\n</div>', 0),
 (11, 'column_tpl', '', 0, 9, 0, '<div>\r\n	<p>[+slaid_name+]</p>	\r\n	<p class="slaid_price">[+price+]</p>	\r\n	[+content+]\r\n	<a href="[~3~]">Заказать</a>\r\n</div>', 0),
-(12, 'contacts', '', 0, 9, 0, '<div id="head">\r\n	<div>\r\n		<a href="[~1~]"><img src="[!getTV? &parent=`1` &tv=`logo_head`!]" alt="logo" ></a>\r\n    	<p>[!getTV? &parent=`38` &tv=`title_page`!]</p>\r\n		[!Wayfinder? &startId=`65` &level=`2` &selfClass=`selfItem` &rowTpl=`menuRowTpl` &parentRowTpl=`menuParentRowTpl`!]    		\r\n<div class="tel_head">\r\n		[!Ditto? &parents=`4` &tpl=`column_contact` &display=`2`&extenders=`customsort` &documents=`8,9`!]\r\n		</div>	\r\n	</div>\r\n</div>', 0),
+(12, 'contacts', '', 0, 9, 0, '<div id="head">\r\n	<div>\r\n		<a href="[~1~]"><img src="[!getTV? &parent=`1` &tv=`logo_head`!]" alt="logo" ></a>\r\n    	<p>[!getTV? &parent=`38` &tv=`title_page`!]</p>\r\n		<div class="bug">\r\n				<a href="#" id="pull">&nbsp;</a>\r\n			</div>\r\n		[!Wayfinder? &startId=`65` &level=`2` &selfClass=`selfItem` &rowTpl=`menuRowTpl` &parentRowTpl=`menuParentRowTpl`!]    		\r\n<div class="tel_head">\r\n		[!Ditto? &parents=`4` &tpl=`column_contact` &display=`2`&extenders=`customsort` &documents=`8,9`!]\r\n		</div>	\r\n	</div>\r\n</div>', 0),
 (13, 'contacty', '', 0, 9, 0, '{{form}}', 0),
 (23, 'map', '', 0, 9, 0, '<embed name="plugin" src="assets/files/map-registralv2.swf" type="application/x-shockwave-flash">\r\n	', 0),
 (26, 'header', '', 0, 9, 0, '<div id="sky">\r\n	\r\n<div class="sky_m">\r\n<ul>\r\n    <li><a href="http://ufreg.ru">Бухгалтерские услуги</a>\r\n    </li>\r\n</ul>\r\n</div>	\r\n	<!--<object data="assets/flash/birds.swf" type="application/x-shockwave-flash">\r\n            <param value="assets/flash/birds.swf" name="movie">\r\n            <param value="transparent" name="wmode">\r\n            <!--[if lt IE 9]>\r\n            <span style="color: #fff; display: block; height: 1px; width: 1px; float: left;">.</span>\r\n            <![endif]-->\r\n           <!-- </object>-->\r\n</div>', 0),
-(14, 'footer', '', 0, 9, 0, '<div id="footer">\r\n	<div>\r\n	<div class="foot_logo">\r\n		<a href="[~1~]"><img src="[!getTV? &parent=`1` &tv=`logo_footer`!]"></a>\r\n		<p id="foot_soc"> Мы в соц. сетях:  <a target="_blank" href="[!getTV? &parent=`1` &tv=`vkcom`!]"><img src="[!getTV? &parent=`38` &tv=`soc_sety_vkcom`!]"></a></p>\r\n\r\n	</div>\r\n\r\n        <div class="foot_cont">\r\n			<div class="foot_cont_w">\r\n			<p>[!Ditto? &parents=`4` &tpl=`column_contact` &display=`2`!]</p>\r\n			<p>[!getTV? &parent=`1` &tv=`adress`!]</p>\r\n			</div>\r\n        </div>        \r\n        <div class="foot_pay">\r\n			<div class="foot_pay_w">\r\n        	<p>Мы принимаем:</p>\r\n            [!Ditto? &parents=`20` &tpl=`column_card` &display=`6`!]\r\n            <a href="[~27~]">Все варианты оплаты</a>\r\n			</div>\r\n        </div>\r\n		</div>\r\n</div>\r\n{{LiveTex}}\r\n{{yandexMetrica}}\r\n{{zadarma}}\r\n\r\n', 0),
+(14, 'footer', '', 0, 9, 0, '<div id="footer">\r\n	<div>\r\n	<div class="foot_logo">\r\n		<a href="[~1~]"><img src="[!getTV? &parent=`1` &tv=`logo_footer`!]"></a>\r\n		<div id="foot_soc">\r\n			<div>Мы в соц. сетях:  </div>\r\n			<div><a target="_blank" href="[!getTV? &parent=`1` &tv=`vkcom`!]"><img src="[!getTV? &parent=`38` &tv=`soc_sety_vkcom`!]"></a></div>\r\n		</div>\r\n	</div>\r\n\r\n        <div class="foot_cont">\r\n			<div class="foot_cont_w">\r\n			<p>[!Ditto? &parents=`4` &tpl=`column_contact` &display=`2`!]</p>\r\n			<p>[!getTV? &parent=`1` &tv=`adress`!]</p>\r\n			</div>\r\n        </div>        \r\n        <div class="foot_pay">\r\n			<div class="foot_pay_w">\r\n        	<p>Мы принимаем:</p>\r\n            [!Ditto? &parents=`20` &tpl=`column_card` &display=`6`!]\r\n            <a href="[~27~]">Все варианты оплаты</a>\r\n			</div>\r\n        </div>\r\n		</div>\r\n</div>\r\n{{LiveTex}}\r\n{{yandexMetrica}}\r\n{{zadarma}}\r\n\r\n', 0),
 (15, 'form', '', 0, 9, 0, '[!eForm? &formid=`Send` &tpl=`form_tpl` &to=`info@ufreg.com` &report=`report_tpl` &thankyou=`thank_tpl` &subject=`Заказ  бухгалтерских услуг` &from =`www.ufreg.ru` &fromname=`Бухгалтерских услуг`!]', 0),
 (16, 'form_tpl', '', 0, 9, 0, '<p>[+validationmessage+]</p>\r\n<form id="order" method="post" action="[~[*id*]~]">		 \r\n	<div>\r\n		<input type="hidden" name="formid" value="Send" />\r\n		<label for="author">Ваше имя</label> <input type="text" id="author" name="author" eform="Имя::1" /><br>\r\n		<label for="phone">Ваш телефон</label> <input type="text" id="phone" name="phone" eform="Телефон::1" /><br>\r\n		<label for="email">Email:</label> <input type="text" id="email" name="email" eform="Адрес электронной почты:email:1" />		\r\n	</div>\r\n	<div>\r\n		<label for="text">Сообщение</label><textarea id="text" name="text" rows="4" cols="35" class="required" eform="Текст сообщения:html:1"></textarea>\r\n		<input type="submit" class="submit_btn" name="submit" id="submit" value=" Отправить " />\r\n	</div>                        		 \r\n</form>\r\n\r\n', 0),
 (17, 'head', '', 0, 9, 0, '<head>\r\n<meta http-equiv="Content-Type" content="text/html; charset=[(modx_charset)]" />\r\n<meta name="keywords" content="[*keywords*]" />\r\n<meta name="description" content="[*description*]" />\r\n<base href="[(site_url)]" />\r\n		<link rel="icon" href="assets/templates/registral/favicon.png" type="image/png" />\r\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n<link rel="stylesheet" type="text/css" href="assets/templates/registral/style/style.css" />\r\n<script type="text/javascript" src="assets/templates/registral/script/jquery-1.11.0.min.js"></script>\r\n<script type="text/javascript" src="assets/templates/registral/script/js.js"></script>\r\n<title>[*longtitle*]</title>\r\n<script type="text/javascript" src="baner/swfobject.js"></script>\r\n<script type="text/javascript">\r\n	<!-- Компания Adobe рекомендует разработчиками использовать для определения версии проигрывателя Flash Player объект SWFObject2. -->\r\n		<!-- Дополнительные сведения см. на странице SWFObject по адресу http://code.google.com/p/swfobject. -->\r\n	<!-- Информацию также можно получить в центре разработчиков Adobe Developer Connection в разделе "Определение версии Flash Player и внедрение файлов SWF с SWFObject 2" -->\r\n		<!-- Чтобы отключить проверку версии Flash Player, установите минимальное значение версии (ноль) -->\r\n			var swfVersionStr = "11.2.0";\r\n	<!-- xiSwfUrlStr может использоваться для определения экспресс-установщика SWF. -->\r\n		var xiSwfUrlStr = "";\r\n	var flashvars = {};\r\n	var params = {};\r\n	params.quality = "high";\r\n	params.bgcolor = "#f4f9ff";\r\n	params.play = "true";\r\n	params.loop = "true";\r\n	params.wmode = "opaque";\r\n	params.scale = "showall";\r\n	params.menu = "true";\r\n	params.devicefont = "false";\r\n	params.salign = "";\r\n	params.allowscriptaccess = "sameDomain";\r\n	var attributes = {};\r\n	attributes.id = "baner";\r\n	attributes.name = "baner";\r\n	attributes.align = "middle";\r\n	swfobject.embedSWF(\r\n		"baner/baner.swf", "baner",\r\n		"680", "109",\r\n		swfVersionStr, xiSwfUrlStr,\r\n		flashvars, params, attributes);\r\n</script>\r\n</head>', 0),
@@ -3545,7 +3579,7 @@ INSERT INTO `srv37029_ufregru_site_htmlsnippets` (`id`, `name`, `description`, `
 (31, 'menuParentRowTpl', '', 0, 0, 0, '<li[+wf.id+][+wf.classes+]><a href="[+wf.link+]" title="[+wf.title+]" [+wf.attributes+][[if? &is=`[+id+]:is:86` &then=` style="color:#ff7100;"` &else=``]]>[+wf.linktext+]</a>[[if? &is=`[+id+]:is:86` &then=`[+wf.wrapper+]` &else=``]]</li>', 0),
 (32, 'LiveTex', '', 0, 0, 0, '<!--<script>\r\n var liveTex = true,\r\n liveTexID = 95125,\r\n liveTex_object = true;\r\nvar cb = function() {\r\n var lt = document.createElement(''script'');\r\n lt.type =''text/javascript'';\r\n lt.async = true;\r\n lt.src = ''//cs15.livetex.ru/js/client.js'';\r\n var sc = document.getElementsByTagName(''script'')[0];\r\n if ( sc ) sc.parentNode.insertBefore(lt, sc);\r\n else document.documentElement.firstChild.appendChild(lt);\r\n};\r\nvar raf = requestAnimationFrame || mozRequestAnimationFrame ||\r\nwebkitRequestAnimationFrame || msRequestAnimationFrame;\r\nif (raf) {\r\n raf(cb)\r\n} else {\r\n window.addEventListener(''load'', cb)\r\n};\r\n </script>-->', 0),
 (33, 'baner', '', 0, 0, 0, '<div id="baner">\r\n	<a href="http://www.adobe.com/go/getflash">\r\n		<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Загрузить Adobe Flash Player" />\r\n	</a>\r\n	<p>Для корректного отображения данной страницы требуется проигрыватель Flash Player версии 11.2.0 или новее.</p>\r\n</div>', 0),
-(35, 'contacts_home', '', 0, 9, 0, '<div id="head">\r\n	<div>\r\n		<a href="[~1~]"><img src="[!getTV? &parent=`1` &tv=`logo_head`!]" alt="logo" ></a>\r\n    	<p>[!getTV? &parent=`38` &tv=`title_page`!]</p>\r\n		[!Wayfinder? &startId=`65` &level=`2` &excludeDocs=`1`	&selfClass=`selfItem` &rowTpl=`menuRowTpl` &parentRowTpl=`menuParentRowTpl`!]    		\r\n		<div class="tel_head">\r\n		[!Ditto? &parents=`4` &tpl=`column_contact` &display=`2`&extenders=`customsort` &documents=`8,9`!]\r\n		</div>	\r\n    </div>\r\n</div>', 0),
+(35, 'contacts_home', 'верхний блок на главную', 0, 9, 0, '<div id="head">\r\n	<div class="logo_block_m">\r\n		<a href="">\r\n			<img src="/assets/templates/registral/img/logo_mob.png">\r\n			<div id="logo_txt">\r\n    			<p>[!getTV? &parent=`38` &tv=`title_page`!]</p>\r\n					<div class="clear"></div>\r\n			</div>\r\n		</a>\r\n	</div>\r\n	<div>\r\n		<div class="logo_h">\r\n			<a href="[~1~]"><img src="[!getTV? &parent=`1` &tv=`logo_head`!]" alt="logo" ></a>\r\n    		<p>[!getTV? &parent=`38` &tv=`title_page`!]</p>\r\n		</div>\r\n		<nav id="menu">\r\n			<div class="bug">\r\n				<a href="#" id="pull">&nbsp;</a>\r\n			</div>\r\n			<div class="wrap_mob_memu">\r\n					<div>\r\n					[!Wayfinder? &startId=`65` &level=`2` &excludeDocs=`1`	&selfClass=`selfItem` &rowTpl=`menuRowTpl` &parentRowTpl=`menuParentRowTpl`!]    		\r\n						<div class="tel_head">\r\n						[!Ditto? &parents=`4` &tpl=`column_contact` &display=`2`&extenders=`customsort` &documents=`8,9`!]\r\n						</div>	\r\n					</div>\r\n					\r\n			</div>\r\n		</nav>\r\n	</div>\r\n</div>\r\n\r\n', 0),
 (34, 'zadarma', '', 0, 0, 0, '<!--<script type="text/javascript">\r\nvar ZCallbackWidgetLinkId = ''c2c075fe19620978cf81c625ce841025'';\r\nvar ZCallbackWidgetDomain = ''my.zadarma.com'';\r\n(function(){\r\nvar lt = document.createElement(''script'');\r\nlt.type =''text/javascript'';\r\nlt.charset = ''utf-8'';\r\nlt.async = true;\r\nlt.src = ''https://'' + ZCallbackWidgetDomain + ''/callbackWidget/js/main.min.js?unq=''+Math.floor(Math.random(0,1000)*1000);\r\nvar sc = document.getElementsByTagName(''script'')[0];\r\nif (sc) sc.parentNode.insertBefore(lt, sc);\r\nelse document.documentElement.firstChild.appendChild(lt);\r\n})();\r\n</script>-->', 0);
 
 -- --------------------------------------------------------
@@ -4899,7 +4933,7 @@ ALTER TABLE `srv37029_ufregru_items`
 -- AUTO_INCREMENT для таблицы `srv37029_ufregru_manager_log`
 --
 ALTER TABLE `srv37029_ufregru_manager_log`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5751;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5785;
 --
 -- AUTO_INCREMENT для таблицы `srv37029_ufregru_manager_users`
 --

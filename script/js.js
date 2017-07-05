@@ -2,6 +2,7 @@
 
 (function ($) {
 
+
 $.fn.carusel = function() {
 var obj = $(this);
 var w_img = obj.find('li').width();
@@ -43,7 +44,19 @@ $(document).ready(function(e) {
 
 	$('#carusel').carusel();
 
+$(document).ready(function() {
+		var body = $('body');
+		var pull = $('#pull');
+		var bug = $('.bug');
+		var search = $('#search')
+		$(pull).on('click', function(e) {
+		e.preventDefault();
+		body.toggleClass('switch');
+			bug.toggleClass('bug bug_close');
+			search.toggleClass('search_menu');
+		});
 
+	});
 
 
 
