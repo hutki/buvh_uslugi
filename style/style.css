@@ -188,13 +188,12 @@ body>div{
 body>div>div{
 	margin:0 auto;
 	max-width: 1084px;	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-	height: 100px;
 	position:relative;
 	background: inherit;
 }
 /* ------------------head--------------- */
 #head{
-	height: 100px;
+	height: 125px;
 }
 #head>div>a:first-child{
 	position: absolute;
@@ -223,7 +222,7 @@ body>div>div{
 .tel_head{
 position: absolute;
 right: 0;
-margin: 10px 20px 0 0;
+margin: 32px 20px 0 0;
 }
 .tel_head p{
 color:#057ec8;
@@ -1214,7 +1213,7 @@ embed,.ins div[role="button"] {
 /*Карусель*/
 
 #carusel {
-    max-width: 1000px;
+    max-width: 950px;
     height: 100px;
     margin: 40px auto;
     overflow: hidden;
@@ -1260,6 +1259,7 @@ embed,.ins div[role="button"] {
     width: 75px;
     height: 100px;
     cursor: pointer;
+    z-index: 1;
 }
 
 #carusel .next {
@@ -1291,27 +1291,26 @@ font-family: Cambria, "Cambria Math", sans-serif;
     float: left;
 }
 .wrap_mob_memu ul{
-	position: relative;
+	position: absolute;
+    right: 0;
+    top: 94px;
 }
 
 .wrap_mob_memu li{
 	display:inline-block;
 	padding: 0 11px;
 }
-/*-----MOBILE-------*/
+/*-----MOBILE---------------------------*/
 @media (max-width:970px) {
 	#body{
 		margin-top: 65px;
 	}
-	body>div>div {
-		height: 64px;
-
-	}
+	
 #head{
 	height: 64px;
     position: fixed;
     top: 0;
-    z-index: 1;
+    z-index: 3;
     background: #fff;
 
 }
@@ -1425,6 +1424,10 @@ font-family: Cambria, "Cambria Math", sans-serif;
     -webkit-overflow-scrolling: touch;
 }
 
+.wrap_mob_memu ul{
+	position: relative;
+    top: 0;
+}
 
 
 .wrap_mob_memu ul li{
@@ -1446,14 +1449,20 @@ text-align: left;
 #head>div ul li ul li a {
    text-transform: lowercase;
    font-size:15px;
+   white-space:normal;
 } 
 #head>div ul li a {
     font-size: 20px;
 }
+.selfItem, .active {
+    background: none;
+}
 	#sky {
 		display: none;
 	}
-
+.ins{
+	padding: 90px 0;
+}
 
 }
 
@@ -1544,9 +1553,24 @@ text-align: left;
 .foot_cont_w{
 	text-align: center;
   	}  
-
+.price {
+	font-size: 12px;
+}
+.price td:first-child {
+    line-height: 14px;
+}
+.price tr td.money {
+    font-size: 14px;
+    padding:5px 10px;
+}
+.price td.content {
+	padding:5px 10px;
 
   }
+  .payment table td p {
+    line-height: 17px;
+}
+}
 
 @media (max-width:480px) {
 	#logo_txt p{
@@ -1564,5 +1588,19 @@ text-align: left;
 	.bug a:after {
    display: none;
 }
+.price {
+	font-size: 8px;
+}
+.price tr td.money {
+    font-size: 10px;
+}
+.price td.zakaz a {
+	font-size: 10px;
+	}
+	
+}
+@media (max-width:365px) {
+
+	
 	
 }
