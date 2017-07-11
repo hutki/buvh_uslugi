@@ -1601,6 +1601,13 @@ text-align: left;
 }
 @media (max-width:365px) {
 
-	
-	
+#carusel{
+	min-width: 320px;
+	}
+#carusel .prev, #carusel .next {
+    width: 60px;
+}
+#carusel ul {
+    left: 61px;
+}
 }

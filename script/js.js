@@ -14,6 +14,7 @@ var w_button = obj.find('.next').width();
 			$('#carusel').css({'width':(itm*w_img + 2*w_button)+'px'});
 		});
 
+
 obj.children('ul').width(w_img * obj.find('li').length);
 
 obj.find('.next').click(function(){
@@ -30,11 +31,26 @@ obj.find('.prev').click(function(){
 	obj.children('ul').css({'left':(c_left) + 'px'});
 	});
 });
+
+$logoInterval = setInterval(autoSlaid,4000);
+$('#carusel').hover(function(){
+		clearInterval($logoInterval);
+	},
+	function(){
+		$logoInterval = setInterval(autoSlaid,4000);
+	});
+
+function autoSlaid(){
+	obj.children('ul').animate({'left':c_left - w_img}, 500, function () {
+	obj.children('ul').append(obj.find('li:first').clone());
+	obj.find('li:first').remove();
+	obj.children('ul').css({'left':(c_left) + 'px'});
+	});
 }
 
+
+}
 }) (jQuery)
-
-
 
 $(document).ready(function(e) {		
 
