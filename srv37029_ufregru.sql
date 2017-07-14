@@ -1,20 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.0.2
+-- version 3.5.1
 -- http://www.phpmyadmin.net
 --
--- Хост: localhost
--- Время создания: Июл 11 2017 г., 14:09
--- Версия сервера: 10.0.17-MariaDB
--- Версия PHP: 5.6.30
+-- Хост: mysql-37029.srv.hoster.ru
+-- Время создания: Июл 13 2017 г., 14:19
+-- Версия сервера: 5.5.33-log
+-- Версия PHP: 5.2.6
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- База данных: `srv37029_ufregru`
@@ -26,13 +26,14 @@ SET time_zone = "+00:00";
 -- Структура таблицы `srv37029_ufregru_active_users`
 --
 
-CREATE TABLE `srv37029_ufregru_active_users` (
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_active_users` (
   `internalKey` int(9) NOT NULL DEFAULT '0',
   `username` varchar(50) NOT NULL DEFAULT '',
   `lasthit` int(20) NOT NULL DEFAULT '0',
   `id` int(10) DEFAULT NULL,
   `action` varchar(10) NOT NULL DEFAULT '',
-  `ip` varchar(50) NOT NULL DEFAULT ''
+  `ip` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`internalKey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data about active users.';
 
 --
@@ -40,7 +41,7 @@ CREATE TABLE `srv37029_ufregru_active_users` (
 --
 
 INSERT INTO `srv37029_ufregru_active_users` (`internalKey`, `username`, `lasthit`, `id`, `action`, `ip`) VALUES
-(1, 'admin', 1499782017, 16, '78', '127.0.0.1');
+(1, 'admin', 1499942096, NULL, '2', '178.124.86.21');
 
 -- --------------------------------------------------------
 
@@ -48,10 +49,11 @@ INSERT INTO `srv37029_ufregru_active_users` (`internalKey`, `username`, `lasthit
 -- Структура таблицы `srv37029_ufregru_categories`
 --
 
-CREATE TABLE `srv37029_ufregru_categories` (
-  `id` int(11) NOT NULL,
-  `category` varchar(45) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Categories to be used snippets,tv,chunks, etc';
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(45) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Categories to be used snippets,tv,chunks, etc' AUTO_INCREMENT=12 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_categories`
@@ -76,12 +78,14 @@ INSERT INTO `srv37029_ufregru_categories` (`id`, `category`) VALUES
 -- Структура таблицы `srv37029_ufregru_documentgroup_names`
 --
 
-CREATE TABLE `srv37029_ufregru_documentgroup_names` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_documentgroup_names` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
   `private_memgroup` tinyint(4) DEFAULT '0' COMMENT 'determine whether the document group is private to manager users',
-  `private_webgroup` tinyint(4) DEFAULT '0' COMMENT 'determines whether the document is private to web users'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for access permissions.';
+  `private_webgroup` tinyint(4) DEFAULT '0' COMMENT 'determines whether the document is private to web users',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for access permissions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -89,11 +93,14 @@ CREATE TABLE `srv37029_ufregru_documentgroup_names` (
 -- Структура таблицы `srv37029_ufregru_document_groups`
 --
 
-CREATE TABLE `srv37029_ufregru_document_groups` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_document_groups` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `document_group` int(10) NOT NULL DEFAULT '0',
-  `document` int(10) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for access permissions.';
+  `document` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `document` (`document`),
+  KEY `document_group` (`document_group`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for access permissions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -101,16 +108,18 @@ CREATE TABLE `srv37029_ufregru_document_groups` (
 -- Структура таблицы `srv37029_ufregru_event_log`
 --
 
-CREATE TABLE `srv37029_ufregru_event_log` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_event_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `eventid` int(11) DEFAULT '0',
   `createdon` int(11) NOT NULL DEFAULT '0',
   `type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1- information, 2 - warning, 3- error',
   `user` int(11) NOT NULL DEFAULT '0' COMMENT 'link to user table',
   `usertype` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 - manager, 1 - web',
   `source` varchar(50) NOT NULL DEFAULT '',
-  `description` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores event and error logs';
+  `description` text,
+  PRIMARY KEY (`id`),
+  KEY `user` (`user`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Stores event and error logs' AUTO_INCREMENT=216 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_event_log`
@@ -314,7 +323,26 @@ INSERT INTO `srv37029_ufregru_event_log` (`id`, `eventid`, `createdon`, `type`, 
 (193, 0, 1499781367, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
 (194, 0, 1499781631, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
 (195, 0, 1499782020, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
-(196, 0, 1499782044, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru');
+(196, 0, 1499782044, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(197, 0, 1499840703, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(198, 0, 1499840742, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(199, 0, 1499841209, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(200, 0, 1499841350, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(201, 0, 1499841573, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(202, 0, 1499841702, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(203, 0, 1499841775, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(204, 0, 1499841838, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(205, 0, 1499846386, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(206, 0, 1499846541, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(207, 0, 1499847391, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(208, 0, 1499848081, 3, 0, 0, 'Snippet - items', '<h3 style="color:red">&laquo; MODX Parse Error &raquo;</h3>\n	                <table border="0" cellpadding="1" cellspacing="0">\n	                <tr><td colspan="2">MODX encountered the following error while attempting to parse the requested resource:</td></tr>\n	                <tr><td colspan="2"><b style="color:red;">&laquo; PHP Parse Error &raquo;</b></td></tr><tr><td colspan="2"><b>PHP error debug</b></td></tr><tr><td colspan="2"><div style="font-weight:bold;border:1px solid #ccc;padding:8px;color:#333;background-color:#ffffcd;">Error : syntax error, unexpected ''href'' (T_STRING), expecting '','' or '';''</div></td></tr><tr><td colspan="2"><div style="font-weight:bold;border:1px solid #ccc;padding:8px;color:#333;background-color:#ffffcd;"><br />\n<b>Parse error</b>:  syntax error, unexpected ''href'' (T_STRING), expecting '','' or '';'' in <b>/home/vit/www/ufreg.ru.loc/manager/includes/document.parser.class.inc.php(1009) : eval()''d code</b> on line <b>27</b><br />\n</div></td></tr><tr><td valign="top">ErrorType[num] : </td><td>PARSING ERROR[4]</td></tr><tr><td>File : </td><td>/home/vit/www/ufreg.ru.loc/manager/includes/document.parser.class.inc.php(1009) : eval()''d code</td></tr><tr><td>Line : </td><td>27</td></tr><tr><td>Source : </td><td>Snippet</td></tr><tr><td colspan="2"><b>Basic info</b></td></tr><tr><td valign="top" style="white-space:nowrap;">REQUEST_URI : </td><td>http://ufreg.ru.loc/</td></tr><tr><td valign="top">Resource : </td><td>[1]<a href="http://ufreg.ru.loc/buxgalterskie-uslugi.html" target="_blank">Главная</a></td></tr><tr><td>Current Snippet : </td><td>items</td></tr><tr><td>Referer : </td><td>http://ufreg.ru.loc/spasibo.html</td></tr><tr><td>User Agent : </td><td>Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36</td></tr><tr><td>IP : </td><td>127.0.0.1</td></tr><tr><td colspan="2"><b>Benchmarks</b></td></tr><tr><td>MySQL : </td><td>0,0175 s (24 Requests)</td></tr><tr><td>PHP : </td><td>0,1118 s</td></tr><tr><td>Total : </td><td>0,1293 s</td></tr><tr><td>Memory : </td><td>2,5234756469727 mb</td></tr></table>\n<br /><p><b>Backtrace</b></p>\n<table><tr><td valign="top">1</td><td>DocumentParser->executeParser()<br />index.php on line 144</td><tr><td valign="top">2</td><td>DocumentParser->prepareResponse()<br />manager/includes/document.parser.class.inc.php on line 1579</td><tr><td valign="top">3</td><td>DocumentParser->outputContent()<br />manager/includes/document.parser.class.inc.php on line 1681</td><tr><td valign="top">4</td><td>DocumentParser->parseDocumentSource()<br />manager/includes/document.parser.class.inc.php on line 596</td><tr><td valign="top">5</td><td>DocumentParser->evalSnippets()<br />manager/includes/document.parser.class.inc.php on line 1461</td><tr><td valign="top">6</td><td>DocumentParser->_get_snip_result()<br />manager/includes/document.parser.class.inc.php on line 1060</td><tr><td valign="top">7</td><td>DocumentParser->evalSnippet()<br />manager/includes/document.parser.class.inc.php on line 1147</td></table>\n'),
+(209, 0, 1499848081, 3, 0, 0, 'phpmailer', 'Invalid address: '),
+(210, 0, 1499848081, 3, 0, 0, 'phpmailer', 'You must provide at least one recipient email address.'),
+(211, 0, 1499848607, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(212, 0, 1499853377, 3, 0, 0, 'phpmailer', 'Invalid address: www.ufreg.ru'),
+(213, 0, 1499942096, 3, 1, 0, 'Системные файлы были изменены.', 'Вы включили проверку системных файлов на наличие изменений, характерных для взломанных сайтов. Это не значит, что сайт был взломан, но желательно просмотреть измененные файлы.(index.php, .htaccess, manager/index.php, manager/includes/config.inc.php)'),
+(214, 0, 1499942096, 3, 1, 0, 'phpmailer', 'Invalid address: '),
+(215, 0, 1499942096, 3, 1, 0, 'phpmailer', 'You must provide at least one recipient email address.');
 
 -- --------------------------------------------------------
 
@@ -322,15 +350,16 @@ INSERT INTO `srv37029_ufregru_event_log` (`id`, `eventid`, `createdon`, `type`, 
 -- Структура таблицы `srv37029_ufregru_items`
 --
 
-CREATE TABLE `srv37029_ufregru_items` (
-  `id` int(5) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_items` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) NOT NULL,
   `color` varchar(200) NOT NULL,
   `content` text NOT NULL,
   `coments` text NOT NULL,
   `price` varchar(200) NOT NULL,
-  `page_id` int(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `page_id` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_items`
@@ -348,9 +377,11 @@ INSERT INTO `srv37029_ufregru_items` (`id`, `name`, `color`, `content`, `coments
 -- Структура таблицы `srv37029_ufregru_keyword_xref`
 --
 
-CREATE TABLE `srv37029_ufregru_keyword_xref` (
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_keyword_xref` (
   `content_id` int(11) NOT NULL DEFAULT '0',
-  `keyword_id` int(11) NOT NULL DEFAULT '0'
+  `keyword_id` int(11) NOT NULL DEFAULT '0',
+  KEY `content_id` (`content_id`),
+  KEY `keyword_id` (`keyword_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Cross reference bewteen keywords and content';
 
 -- --------------------------------------------------------
@@ -359,222 +390,23 @@ CREATE TABLE `srv37029_ufregru_keyword_xref` (
 -- Структура таблицы `srv37029_ufregru_manager_log`
 --
 
-CREATE TABLE `srv37029_ufregru_manager_log` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_manager_log` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `timestamp` int(20) NOT NULL DEFAULT '0',
   `internalKey` int(10) NOT NULL DEFAULT '0',
   `username` varchar(255) DEFAULT NULL,
   `action` int(10) NOT NULL DEFAULT '0',
   `itemid` varchar(10) DEFAULT '0',
   `itemname` varchar(255) DEFAULT NULL,
-  `message` varchar(255) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains a record of user interaction.';
+  `message` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Contains a record of user interaction.' AUTO_INCREMENT=6412 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_manager_log`
 --
 
 INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `username`, `action`, `itemid`, `itemname`, `message`) VALUES
-(3201, 1395841633, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3202, 1395841635, 1, 'admin', 61, '13', '-', 'Publishing a resource'),
-(3203, 1395841637, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3204, 1395841651, 1, 'admin', 62, '12', '-', 'Un-publishing a resource'),
-(3205, 1395841653, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3206, 1395841662, 1, 'admin', 61, '12', '-', 'Publishing a resource'),
-(3207, 1395841663, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3208, 1395842834, 1, 'admin', 62, '12', '-', 'Un-publishing a resource'),
-(3209, 1395842836, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3210, 1395842839, 1, 'admin', 62, '13', '-', 'Un-publishing a resource'),
-(3211, 1395842840, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3212, 1395843501, 1, 'admin', 61, '12', '-', 'Publishing a resource'),
-(3213, 1395843503, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3214, 1395843505, 1, 'admin', 61, '13', '-', 'Publishing a resource'),
-(3215, 1395843507, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3216, 1395843841, 1, 'admin', 62, '13', '-', 'Un-publishing a resource'),
-(3217, 1395843843, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3218, 1395843850, 1, 'admin', 62, '12', '-', 'Un-publishing a resource'),
-(3219, 1395843851, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3220, 1395843858, 1, 'admin', 61, '13', '-', 'Publishing a resource'),
-(3221, 1395843859, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3222, 1395843866, 1, 'admin', 62, '13', '-', 'Un-publishing a resource'),
-(3223, 1395843867, 1, 'admin', 3, '10', 'реклама', 'Viewing data for resource'),
-(3224, 1395843976, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3225, 1395844118, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3226, 1395844119, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3227, 1395844253, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3228, 1395844259, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3229, 1395844294, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3230, 1395844295, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3231, 1395844304, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3232, 1395844308, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3233, 1395844322, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3234, 1395844323, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3235, 1395844330, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3236, 1395844341, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3237, 1395844343, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3238, 1395844348, 1, 'admin', 27, '29', '-', 'Editing resource'),
-(3239, 1395844349, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3240, 1395844350, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3241, 1395844359, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3242, 1395844389, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3243, 1395844390, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3244, 1395844441, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3245, 1395844547, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3246, 1395844549, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3247, 1395844568, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3248, 1395844577, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3249, 1395844578, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3250, 1395844614, 1, 'admin', 27, '29', '-', 'Editing resource'),
-(3251, 1395844626, 1, 'admin', 27, '29', '-', 'Editing resource'),
-(3252, 1395844639, 1, 'admin', 5, '29', '-', 'Saving resource'),
-(3253, 1395844640, 1, 'admin', 3, '29', 'Бухгалтерское сопровождение ИП', 'Viewing data for resource'),
-(3254, 1395844685, 1, 'admin', 27, '28', '-', 'Editing resource'),
-(3255, 1395844702, 1, 'admin', 27, '28', '-', 'Editing resource'),
-(3256, 1395844730, 1, 'admin', 5, '28', '-', 'Saving resource'),
-(3257, 1395844732, 1, 'admin', 3, '28', 'Нулевая отчетность', 'Viewing data for resource'),
-(3258, 1395844811, 1, 'admin', 27, '68', '-', 'Editing resource'),
-(3259, 1395844821, 1, 'admin', 5, '68', '-', 'Saving resource'),
-(3260, 1395844823, 1, 'admin', 3, '68', 'Подготовка деклараций', 'Viewing data for resource'),
-(3261, 1395845002, 1, 'admin', 27, '68', '-', 'Editing resource'),
-(3262, 1395845094, 1, 'admin', 5, '68', '-', 'Saving resource'),
-(3263, 1395845095, 1, 'admin', 3, '68', 'Подготовка деклараций', 'Viewing data for resource'),
-(3264, 1395845153, 1, 'admin', 27, '68', '-', 'Editing resource'),
-(3265, 1395845223, 1, 'admin', 5, '68', '-', 'Saving resource'),
-(3266, 1395845225, 1, 'admin', 3, '68', 'Подготовка деклараций', 'Viewing data for resource'),
-(3267, 1395845386, 1, 'admin', 27, '68', '-', 'Editing resource'),
-(3268, 1395845399, 1, 'admin', 5, '68', '-', 'Saving resource'),
-(3269, 1395845400, 1, 'admin', 3, '68', 'Подготовка деклараций', 'Viewing data for resource'),
-(3270, 1395845407, 1, 'admin', 27, '68', '-', 'Editing resource'),
-(3271, 1395845412, 1, 'admin', 5, '68', '-', 'Saving resource'),
-(3272, 1395845414, 1, 'admin', 3, '68', 'Подготовка деклараций', 'Viewing data for resource'),
-(3273, 1395846128, 1, 'admin', 27, '68', '-', 'Editing resource'),
-(3274, 1395846170, 1, 'admin', 5, '68', '-', 'Saving resource'),
-(3275, 1395846172, 1, 'admin', 3, '68', 'Подготовка деклараций', 'Viewing data for resource'),
-(3276, 1395846328, 1, 'admin', 27, '2', '-', 'Editing resource'),
-(3277, 1395846354, 1, 'admin', 27, '68', '-', 'Editing resource'),
-(3278, 1395846366, 1, 'admin', 27, '68', '-', 'Editing resource'),
-(3279, 1395846373, 1, 'admin', 27, '2', '-', 'Editing resource'),
-(3280, 1395846385, 1, 'admin', 5, '2', '-', 'Saving resource'),
-(3281, 1395846387, 1, 'admin', 3, '2', 'Стоимость', 'Viewing data for resource'),
-(3282, 1395846434, 1, 'admin', 27, '2', '-', 'Editing resource'),
-(3283, 1395846438, 1, 'admin', 27, '2', '-', 'Editing resource'),
-(3284, 1395846448, 1, 'admin', 5, '2', '-', 'Saving resource'),
-(3285, 1395846450, 1, 'admin', 3, '2', 'Стоимость', 'Viewing data for resource'),
-(3286, 1395846686, 1, 'admin', 27, '2', '-', 'Editing resource'),
-(3287, 1395846758, 1, 'admin', 27, '72', '-', 'Editing resource'),
-(3288, 1395846782, 1, 'admin', 5, '72', '-', 'Saving resource'),
-(3289, 1395846783, 1, 'admin', 3, '72', 'Новый ресурс', 'Viewing data for resource'),
-(3290, 1395846814, 1, 'admin', 27, '69', '-', 'Editing resource'),
-(3291, 1395846834, 1, 'admin', 5, '69', '-', 'Saving resource'),
-(3292, 1395846836, 1, 'admin', 3, '69', 'Новый ресурс', 'Viewing data for resource'),
-(3293, 1395846843, 1, 'admin', 27, '69', '-', 'Editing resource'),
-(3294, 1395846847, 1, 'admin', 5, '69', '-', 'Saving resource'),
-(3295, 1395846849, 1, 'admin', 3, '69', 'Новый ресурс', 'Viewing data for resource'),
-(3296, 1395858064, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3297, 1395858079, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3298, 1395858080, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3299, 1395858237, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3300, 1395858246, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3301, 1395858294, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3302, 1395858296, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3303, 1395858442, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3304, 1395858465, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3305, 1395858466, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3306, 1395858480, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3307, 1395858860, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3308, 1395858875, 1, 'admin', 27, '30', '-', 'Editing resource'),
-(3309, 1395858900, 1, 'admin', 5, '30', '-', 'Saving resource'),
-(3310, 1395858902, 1, 'admin', 3, '30', 'Бухгалтерское сопровождение фирм', 'Viewing data for resource'),
-(3311, 1395859026, 1, 'admin', 27, '5', '-', 'Editing resource'),
-(3312, 1395859029, 1, 'admin', 27, '6', '-', 'Editing resource'),
-(3313, 1395907264, 1, 'admin', 58, '-', 'MODx', 'Logged in'),
-(3314, 1395907276, 1, 'admin', 76, '-', '-', 'Element management'),
-(3315, 1395907280, 1, 'admin', 16, '9', 'Главная', 'Editing template'),
-(3316, 1395907294, 1, 'admin', 76, '-', '-', 'Element management'),
-(3317, 1395907299, 1, 'admin', 78, '4', 'body', 'Editing Chunk (HTML Snippet)'),
-(3318, 1395907302, 1, 'admin', 76, '-', '-', 'Element management'),
-(3319, 1395907310, 1, 'admin', 22, '19', 'New snippet', 'Editing Snippet'),
-(3320, 1395907370, 1, 'admin', 27, '2', '-', 'Editing resource'),
-(3321, 1395907373, 1, 'admin', 27, '41', '-', 'Editing resource'),
-(3322, 1395907375, 1, 'admin', 27, '43', '-', 'Editing resource'),
-(3323, 1395907378, 1, 'admin', 27, '45', '-', 'Editing resource'),
-(3324, 1395907395, 1, 'admin', 27, '31', '-', 'Editing resource'),
-(3325, 1395907409, 1, 'admin', 27, '40', '-', 'Editing resource'),
-(3326, 1395907412, 1, 'admin', 27, '39', '-', 'Editing resource'),
-(3327, 1395907435, 1, 'admin', 27, '2', '-', 'Editing resource'),
-(3328, 1395907463, 1, 'admin', 27, '29', '-', 'Editing resource'),
-(3329, 1395907476, 1, 'admin', 27, '29', '-', 'Editing resource'),
-(3330, 1395907479, 1, 'admin', 27, '53', '-', 'Editing resource'),
-(3331, 1395907502, 1, 'admin', 24, '19', '-', 'Saving Snippet'),
-(3332, 1395907502, 1, 'admin', 22, '19', 'New snippet', 'Editing Snippet'),
-(3333, 1395907532, 1, 'admin', 24, '19', '-', 'Saving Snippet'),
-(3334, 1395907532, 1, 'admin', 22, '19', 'New snippet', 'Editing Snippet'),
-(3335, 1395907543, 1, 'admin', 24, '19', '-', 'Saving Snippet'),
-(3336, 1395907543, 1, 'admin', 22, '19', 'New snippet', 'Editing Snippet'),
-(3337, 1395907601, 1, 'admin', 76, '-', '-', 'Element management'),
-(3338, 1395909059, 1, 'admin', 58, '-', 'MODx', 'Logged in'),
-(3339, 1395909096, 1, 'admin', 112, '2', 'Товары', 'Execute module'),
-(3340, 1395909139, 1, 'admin', 106, '-', '-', 'Viewing Modules'),
-(3341, 1395909143, 1, 'admin', 108, '2', 'Товары', 'Edit module'),
-(3342, 1395909160, 1, 'admin', 106, '-', '-', 'Viewing Modules'),
-(3343, 1395909162, 1, 'admin', 76, '-', '-', 'Element management'),
-(3344, 1395909167, 1, 'admin', 22, '19', 'New snippet', 'Editing Snippet'),
-(3345, 1395909178, 1, 'admin', 24, '19', '-', 'Saving Snippet'),
-(3346, 1395909179, 1, 'admin', 76, '-', '-', 'Element management'),
-(3347, 1395909180, 1, 'admin', 112, '2', 'Товары', 'Execute module'),
-(3348, 1395949694, 1, 'admin', 112, '2', 'Товары', 'Execute module'),
-(3349, 1396375053, 1, 'admin', 58, '-', 'MODx', 'Logged in'),
-(3350, 1396375064, 1, 'admin', 27, '43', '-', 'Editing resource'),
-(3351, 1396375079, 1, 'admin', 5, '43', '-', 'Saving resource'),
-(3352, 1396375081, 1, 'admin', 3, '43', 'Новый ресурс', 'Viewing data for resource'),
-(3353, 1396375083, 1, 'admin', 27, '45', '-', 'Editing resource'),
-(3354, 1396375093, 1, 'admin', 5, '45', '-', 'Saving resource'),
-(3355, 1396375094, 1, 'admin', 3, '45', 'Новый ресурс', 'Viewing data for resource'),
-(3356, 1396375100, 1, 'admin', 27, '28', '-', 'Editing resource'),
-(3357, 1396375114, 1, 'admin', 5, '28', '-', 'Saving resource'),
-(3358, 1396375116, 1, 'admin', 3, '28', 'Нулевая отчетность', 'Viewing data for resource'),
-(3359, 1396376156, 1, 'admin', 3, '28', 'Нулевая отчетность', 'Viewing data for resource'),
-(3360, 1396457842, 1, 'admin', 58, '-', 'MODx', 'Logged in'),
-(3361, 1396457858, 1, 'admin', 76, '-', '-', 'Element management'),
-(3362, 1396457885, 1, 'admin', 78, '18', 'header', 'Editing Chunk (HTML Snippet)'),
-(3363, 1396457897, 1, 'admin', 97, '18', '-', 'Duplicate Chunk (HTML Snippet)'),
-(3364, 1396457897, 1, 'admin', 78, '26', 'Duplicate of header', 'Editing Chunk (HTML Snippet)'),
-(3365, 1396457906, 1, 'admin', 79, '26', '-', 'Saving Chunk (HTML Snippet)'),
-(3366, 1396457906, 1, 'admin', 76, '-', '-', 'Element management'),
-(3367, 1396457913, 1, 'admin', 78, '26', 'header_sky', 'Editing Chunk (HTML Snippet)'),
-(3368, 1396457931, 1, 'admin', 79, '26', '-', 'Saving Chunk (HTML Snippet)'),
-(3369, 1396457931, 1, 'admin', 76, '-', '-', 'Element management'),
-(3370, 1396457941, 1, 'admin', 78, '26', 'header_sky', 'Editing Chunk (HTML Snippet)'),
-(3371, 1396457969, 1, 'admin', 79, '26', '-', 'Saving Chunk (HTML Snippet)'),
-(3372, 1396457970, 1, 'admin', 76, '-', '-', 'Element management'),
-(3373, 1396458612, 1, 'admin', 27, '65', '-', 'Editing resource'),
-(3374, 1396458614, 1, 'admin', 27, '1', '-', 'Editing resource'),
-(3375, 1396458628, 1, 'admin', 27, '4', '-', 'Editing resource'),
-(3376, 1396458634, 1, 'admin', 76, '-', '-', 'Element management'),
-(3377, 1396458638, 1, 'admin', 16, '8', 'Контакты', 'Editing template'),
-(3378, 1396458640, 1, 'admin', 96, '8', '-', 'Duplicate Template'),
-(3379, 1396458640, 1, 'admin', 16, '19', 'Duplicate of Контакты', 'Editing template'),
-(3380, 1396458651, 1, 'admin', 20, '19', '-', 'Saving template'),
-(3381, 1396458651, 1, 'admin', 76, '-', '-', 'Element management'),
-(3382, 1396458652, 1, 'admin', 76, '-', '-', 'Element management'),
-(3383, 1396458655, 1, 'admin', 78, '26', 'header_sky', 'Editing Chunk (HTML Snippet)'),
-(3384, 1396458662, 1, 'admin', 76, '-', '-', 'Element management'),
-(3385, 1396458666, 1, 'admin', 16, '19', 'Контакты1', 'Editing template'),
-(3386, 1396458671, 1, 'admin', 20, '19', '-', 'Saving template'),
-(3387, 1396458671, 1, 'admin', 76, '-', '-', 'Element management'),
-(3388, 1396458675, 1, 'admin', 78, '18', 'header', 'Editing Chunk (HTML Snippet)'),
-(3389, 1396458701, 1, 'admin', 76, '-', '-', 'Element management'),
-(3390, 1396458710, 1, 'admin', 78, '26', 'header_sky', 'Editing Chunk (HTML Snippet)'),
-(3391, 1396458714, 1, 'admin', 79, '26', '-', 'Saving Chunk (HTML Snippet)'),
-(3392, 1396458714, 1, 'admin', 76, '-', '-', 'Element management'),
-(3393, 1396458719, 1, 'admin', 78, '26', 'header_sky', 'Editing Chunk (HTML Snippet)'),
-(3394, 1396458724, 1, 'admin', 79, '26', '-', 'Saving Chunk (HTML Snippet)'),
-(3395, 1396458724, 1, 'admin', 76, '-', '-', 'Element management'),
-(3396, 1396458824, 1, 'admin', 27, '4', '-', 'Editing resource'),
-(3397, 1396458827, 1, 'admin', 27, '4', '-', 'Editing resource'),
-(3398, 1396458829, 1, 'admin', 5, '4', '-', 'Saving resource'),
-(3399, 1396458831, 1, 'admin', 3, '4', 'Контакты', 'Viewing data for resource'),
-(3400, 1396458914, 1, 'admin', 76, '-', '-', 'Element management'),
 (3401, 1396458928, 1, 'admin', 78, '18', 'header', 'Editing Chunk (HTML Snippet)'),
 (3402, 1396458933, 1, 'admin', 79, '18', '-', 'Saving Chunk (HTML Snippet)'),
 (3403, 1396458933, 1, 'admin', 76, '-', '-', 'Element management'),
@@ -1083,8 +915,7 @@ INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `u
 (3906, 1403517912, 1, 'admin', 5, '-', '-', 'Saving resource'),
 (3907, 1403517912, 1, 'admin', 27, '79', '-', 'Editing resource'),
 (3908, 1403523421, 1, 'admin', 5, '79', '-', 'Saving resource'),
-(3909, 1403523422, 1, 'admin', 27, '79', '-', 'Editing resource');
-INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `username`, `action`, `itemid`, `itemname`, `message`) VALUES
+(3909, 1403523422, 1, 'admin', 27, '79', '-', 'Editing resource'),
 (3910, 1403544669, 1, 'admin', 27, '79', '-', 'Editing resource'),
 (3911, 1403544673, 1, 'admin', 5, '79', '-', 'Saving resource'),
 (3912, 1403544673, 1, 'admin', 27, '79', '-', 'Editing resource'),
@@ -1258,7 +1089,8 @@ INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `u
 (4080, 1404715156, 1, 'admin', 5, '66', '-', 'Saving resource'),
 (4081, 1404715157, 1, 'admin', 3, '66', 'Ликвидация ИП ', 'Viewing data for resource'),
 (4082, 1404715157, 1, 'admin', 27, '67', '-', 'Editing resource'),
-(4083, 1404715173, 1, 'admin', 27, '67', '-', 'Editing resource'),
+(4083, 1404715173, 1, 'admin', 27, '67', '-', 'Editing resource');
+INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `username`, `action`, `itemid`, `itemname`, `message`) VALUES
 (4084, 1404715186, 1, 'admin', 5, '67', '-', 'Saving resource'),
 (4085, 1404715187, 1, 'admin', 3, '67', 'Получение выписки из ЕГРЮЛ ', 'Viewing data for resource'),
 (4086, 1404715259, 1, 'admin', 27, '12', '-', 'Editing resource'),
@@ -1711,8 +1543,7 @@ INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `u
 (4533, 1421161729, 1, 'admin', 76, '-', '-', 'Element management'),
 (4534, 1421161735, 1, 'admin', 78, '14', 'footer', 'Editing Chunk (HTML Snippet)'),
 (4535, 1421161777, 1, 'admin', 27, '1', 'Главная', 'Editing resource'),
-(4536, 1421161793, 1, 'admin', 27, '38', 'элементы страницы', 'Editing resource');
-INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `username`, `action`, `itemid`, `itemname`, `message`) VALUES
+(4536, 1421161793, 1, 'admin', 27, '38', 'элементы страницы', 'Editing resource'),
 (4537, 1421161798, 1, 'admin', 27, '40', 'Тексты', 'Editing resource'),
 (4538, 1421161809, 1, 'admin', 27, '39', 'Картинки', 'Editing resource'),
 (4539, 1421161821, 1, 'admin', 27, '20', 'карты оплаты', 'Editing resource'),
@@ -1782,7 +1613,8 @@ INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `u
 (4603, 1426165620, 1, 'admin', 27, '83', 'В ближайшем будущем возможно не будет взиматься налог НДФЛ с продажи жилья. ', 'Editing resource'),
 (4604, 1426165623, 1, 'admin', 27, '79', 'Полезная информация', 'Editing resource'),
 (4605, 1426165625, 1, 'admin', 4, '-', 'Новый ресурс', 'Creating a resource'),
-(4606, 1426165730, 1, 'admin', 5, '-', 'Виды деятельности для применения налоговых каникул.', 'Saving resource'),
+(4606, 1426165730, 1, 'admin', 5, '-', 'Виды деятельности для применения налоговых каникул.', 'Saving resource');
+INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `username`, `action`, `itemid`, `itemname`, `message`) VALUES
 (4607, 1426165731, 1, 'admin', 3, '95', 'Виды деятельности для применения налоговых каникул.', 'Viewing data for resource'),
 (4608, 1426677362, 1, 'admin', 58, '-', 'MODX', 'Logged in'),
 (4609, 1426677369, 1, 'admin', 27, '2', 'Прайс', 'Editing resource'),
@@ -2368,12 +2200,12 @@ INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `u
 (5189, 1496729007, 1, 'admin', 27, '3', 'Заказать', 'Editing resource'),
 (5190, 1496729039, 1, 'admin', 5, '3', 'Заказать', 'Saving resource'),
 (5191, 1496729041, 1, 'admin', 3, '3', 'Заказать', 'Viewing data for resource'),
-(5192, 1496729042, 1, 'admin', 27, '3', 'Заказать', 'Editing resource');
-INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `username`, `action`, `itemid`, `itemname`, `message`) VALUES
+(5192, 1496729042, 1, 'admin', 27, '3', 'Заказать', 'Editing resource'),
 (5193, 1496729047, 1, 'admin', 27, '31', 'Он-лайн выписка из ЕГРЮЛ', 'Editing resource'),
 (5194, 1496729055, 1, 'admin', 27, '3', 'Заказать', 'Editing resource'),
 (5195, 1496729085, 1, 'admin', 27, '86', 'Услуги', 'Editing resource'),
-(5196, 1496729095, 1, 'admin', 27, '30', 'Бухгалтерское сопровождение фирм', 'Editing resource'),
+(5196, 1496729095, 1, 'admin', 27, '30', 'Бухгалтерское сопровождение фирм', 'Editing resource');
+INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `username`, `action`, `itemid`, `itemname`, `message`) VALUES
 (5197, 1496729107, 1, 'admin', 27, '58', 'Новый ресурс', 'Editing resource'),
 (5198, 1496729114, 1, 'admin', 27, '59', 'Новый ресурс', 'Editing resource'),
 (5199, 1496729120, 1, 'admin', 27, '60', 'Новый ресурс', 'Editing resource'),
@@ -2963,7 +2795,8 @@ INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `u
 (5783, 1499258270, 1, 'admin', 79, '14', 'footer', 'Saving Chunk (HTML Snippet)'),
 (5784, 1499258270, 1, 'admin', 78, '14', 'footer', 'Editing Chunk (HTML Snippet)'),
 (5785, 1499317563, 1, 'admin', 76, '-', '-', 'Element management'),
-(5786, 1499317568, 1, 'admin', 78, '12', 'contacts', 'Editing Chunk (HTML Snippet)'),
+(5786, 1499317568, 1, 'admin', 78, '12', 'contacts', 'Editing Chunk (HTML Snippet)');
+INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `username`, `action`, `itemid`, `itemname`, `message`) VALUES
 (5787, 1499317699, 1, 'admin', 79, '12', 'contacts', 'Saving Chunk (HTML Snippet)'),
 (5788, 1499317699, 1, 'admin', 78, '12', 'contacts', 'Editing Chunk (HTML Snippet)'),
 (5789, 1499317912, 1, 'admin', 76, '-', '-', 'Element management'),
@@ -3006,8 +2839,7 @@ INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `u
 (5826, 1499430515, 1, 'admin', 3, '45', 'Новый ресурс', 'Viewing data for resource'),
 (5827, 1499430516, 1, 'admin', 27, '42', 'Новый ресурс', 'Editing resource'),
 (5828, 1499430524, 1, 'admin', 5, '42', 'Новый ресурс', 'Saving resource'),
-(5829, 1499430526, 1, 'admin', 3, '42', 'Новый ресурс', 'Viewing data for resource');
-INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `username`, `action`, `itemid`, `itemname`, `message`) VALUES
+(5829, 1499430526, 1, 'admin', 3, '42', 'Новый ресурс', 'Viewing data for resource'),
 (5830, 1499430528, 1, 'admin', 27, '44', 'Новый ресурс', 'Editing resource'),
 (5831, 1499430537, 1, 'admin', 27, '46', 'Новый ресурс', 'Editing resource'),
 (5832, 1499430543, 1, 'admin', 5, '46', 'Новый ресурс', 'Saving resource'),
@@ -3426,7 +3258,170 @@ INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `u
 (6245, 1499781833, 1, 'admin', 79, '16', 'form_tpl', 'Saving Chunk (HTML Snippet)'),
 (6246, 1499781833, 1, 'admin', 78, '16', 'form_tpl', 'Editing Chunk (HTML Snippet)'),
 (6247, 1499782017, 1, 'admin', 79, '16', 'form_tpl', 'Saving Chunk (HTML Snippet)'),
-(6248, 1499782017, 1, 'admin', 78, '16', 'form_tpl', 'Editing Chunk (HTML Snippet)');
+(6248, 1499782017, 1, 'admin', 78, '16', 'form_tpl', 'Editing Chunk (HTML Snippet)'),
+(6249, 1499835499, 1, 'admin', 76, '-', '-', 'Element management'),
+(6250, 1499835569, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6251, 1499836396, 1, 'admin', 78, '16', 'form_tpl', 'Editing Chunk (HTML Snippet)'),
+(6252, 1499836972, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6253, 1499836972, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6254, 1499837079, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6255, 1499837080, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6256, 1499837124, 1, 'admin', 76, '-', '-', 'Element management'),
+(6257, 1499837135, 1, 'admin', 78, '24', 'table', 'Editing Chunk (HTML Snippet)'),
+(6258, 1499837146, 1, 'admin', 76, '-', '-', 'Element management'),
+(6259, 1499837160, 1, 'admin', 16, '16', 'Заказать', 'Editing template'),
+(6260, 1499837170, 1, 'admin', 76, '-', '-', 'Element management'),
+(6261, 1499837174, 1, 'admin', 16, '14', 'Таблицы', 'Editing template'),
+(6262, 1499837177, 1, 'admin', 76, '-', '-', 'Element management'),
+(6263, 1499837196, 1, 'admin', 16, '16', 'Заказать', 'Editing template'),
+(6264, 1499837225, 1, 'admin', 20, '16', 'Заказать', 'Saving template'),
+(6265, 1499837225, 1, 'admin', 16, '16', 'Заказать', 'Editing template'),
+(6266, 1499837319, 1, 'admin', 20, '16', 'Заказать', 'Saving template'),
+(6267, 1499837319, 1, 'admin', 16, '16', 'Заказать', 'Editing template'),
+(6268, 1499837321, 1, 'admin', 76, '-', '-', 'Element management'),
+(6269, 1499837349, 1, 'admin', 16, '16', 'Заказать', 'Editing template'),
+(6270, 1499837363, 1, 'admin', 27, '2', 'Прайс', 'Editing resource'),
+(6271, 1499837368, 1, 'admin', 76, '-', '-', 'Element management'),
+(6272, 1499837371, 1, 'admin', 16, '20', 'Статьи', 'Editing template'),
+(6273, 1499837387, 1, 'admin', 76, '-', '-', 'Element management'),
+(6274, 1499837390, 1, 'admin', 16, '15', 'Стоимость', 'Editing template'),
+(6275, 1499837400, 1, 'admin', 20, '15', 'Стоимость', 'Saving template'),
+(6276, 1499837400, 1, 'admin', 16, '15', 'Стоимость', 'Editing template'),
+(6277, 1499837435, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6278, 1499837435, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6279, 1499837457, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6280, 1499837457, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6281, 1499837512, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6282, 1499837512, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6283, 1499837535, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6284, 1499837535, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6285, 1499837551, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6286, 1499837551, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6287, 1499837776, 1, 'admin', 27, '42', 'Новый ресурс', 'Editing resource'),
+(6288, 1499837784, 1, 'admin', 27, '44', 'Новый ресурс', 'Editing resource'),
+(6289, 1499837791, 1, 'admin', 27, '46', 'Новый ресурс', 'Editing resource'),
+(6290, 1499837795, 1, 'admin', 27, '48', 'Новый ресурс', 'Editing resource'),
+(6291, 1499837823, 1, 'admin', 27, '47', 'Новый ресурс', 'Editing resource'),
+(6292, 1499837902, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6293, 1499837902, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6294, 1499837952, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6295, 1499837952, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6296, 1499838127, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6297, 1499838127, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6298, 1499838772, 1, 'admin', 27, '69', 'Новый ресурс', 'Editing resource'),
+(6299, 1499838850, 1, 'admin', 5, '69', 'Новый ресурс', 'Saving resource'),
+(6300, 1499838850, 1, 'admin', 27, '69', 'Новый ресурс', 'Editing resource'),
+(6301, 1499838872, 1, 'admin', 5, '69', 'Новый ресурс', 'Saving resource'),
+(6302, 1499838872, 1, 'admin', 27, '69', 'Новый ресурс', 'Editing resource'),
+(6303, 1499838901, 1, 'admin', 5, '69', 'Новый ресурс', 'Saving resource'),
+(6304, 1499838901, 1, 'admin', 27, '69', 'Новый ресурс', 'Editing resource'),
+(6305, 1499839122, 1, 'admin', 27, '97', 'Электронная подача о применение / снятие торгового сбора', 'Editing resource'),
+(6306, 1499839139, 1, 'admin', 27, '41', 'Новый ресурс', 'Editing resource'),
+(6307, 1499839217, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6308, 1499839217, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6309, 1499839252, 1, 'admin', 27, '75', 'Новый ресурс', 'Editing resource'),
+(6310, 1499839270, 1, 'admin', 27, '73', 'Новый ресурс', 'Editing resource'),
+(6311, 1499839288, 1, 'admin', 27, '97', 'Электронная подача о применение / снятие торгового сбора', 'Editing resource'),
+(6312, 1499839298, 1, 'admin', 27, '73', 'Новый ресурс', 'Editing resource'),
+(6313, 1499839316, 1, 'admin', 27, '97', 'Электронная подача о применение / снятие торгового сбора', 'Editing resource'),
+(6314, 1499839321, 1, 'admin', 27, '78', 'Новый ресурс', 'Editing resource'),
+(6315, 1499839325, 1, 'admin', 27, '74', 'Новый ресурс', 'Editing resource'),
+(6316, 1499839515, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6317, 1499839515, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6318, 1499839754, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6319, 1499839754, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6320, 1499840387, 1, 'admin', 27, '48', 'Новый ресурс', 'Editing resource'),
+(6321, 1499840406, 1, 'admin', 27, '69', 'Новый ресурс', 'Editing resource'),
+(6322, 1499840412, 1, 'admin', 27, '70', 'Новый ресурс', 'Editing resource'),
+(6323, 1499840453, 1, 'admin', 5, '70', 'Новый ресурс', 'Saving resource'),
+(6324, 1499840454, 1, 'admin', 3, '70', 'Новый ресурс', 'Viewing data for resource'),
+(6325, 1499840469, 1, 'admin', 27, '71', 'Новый ресурс', 'Editing resource'),
+(6326, 1499840498, 1, 'admin', 27, '72', 'Новый ресурс', 'Editing resource'),
+(6327, 1499840533, 1, 'admin', 27, '78', 'Новый ресурс', 'Editing resource'),
+(6328, 1499840541, 1, 'admin', 5, '78', 'Новый ресурс', 'Saving resource'),
+(6329, 1499840542, 1, 'admin', 3, '78', 'Новый ресурс', 'Viewing data for resource'),
+(6330, 1499840580, 1, 'admin', 24, '22', 'getTable', 'Saving Snippet'),
+(6331, 1499840580, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6332, 1499840585, 1, 'admin', 76, '-', '-', 'Element management'),
+(6333, 1499840589, 1, 'admin', 22, '25', 'getID', 'Editing Snippet'),
+(6334, 1499840836, 1, 'admin', 76, '-', '-', 'Element management'),
+(6335, 1499840848, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6336, 1499840886, 1, 'admin', 79, '15', 'form', 'Saving Chunk (HTML Snippet)'),
+(6337, 1499840886, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6338, 1499840933, 1, 'admin', 24, '25', 'getID', 'Saving Snippet'),
+(6339, 1499840933, 1, 'admin', 22, '25', 'getID', 'Editing Snippet'),
+(6340, 1499841031, 1, 'admin', 76, '-', '-', 'Element management'),
+(6341, 1499841036, 1, 'admin', 22, '22', 'getTable', 'Editing Snippet'),
+(6342, 1499841137, 1, 'admin', 24, '25', 'getID', 'Saving Snippet'),
+(6343, 1499841137, 1, 'admin', 22, '25', 'getID', 'Editing Snippet'),
+(6344, 1499841151, 1, 'admin', 79, '15', 'form', 'Saving Chunk (HTML Snippet)'),
+(6345, 1499841151, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6346, 1499841182, 1, 'admin', 24, '25', 'getID', 'Saving Snippet'),
+(6347, 1499841182, 1, 'admin', 22, '25', 'getID', 'Editing Snippet'),
+(6348, 1499841238, 1, 'admin', 76, '-', '-', 'Element management'),
+(6349, 1499841243, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6350, 1499841247, 1, 'admin', 76, '-', '-', 'Element management'),
+(6351, 1499841248, 1, 'admin', 78, '16', 'form_tpl', 'Editing Chunk (HTML Snippet)'),
+(6352, 1499841259, 1, 'admin', 76, '-', '-', 'Element management'),
+(6353, 1499841262, 1, 'admin', 78, '21', 'report_tpl', 'Editing Chunk (HTML Snippet)'),
+(6354, 1499841330, 1, 'admin', 79, '21', 'report_tpl', 'Saving Chunk (HTML Snippet)'),
+(6355, 1499841330, 1, 'admin', 76, '-', '-', 'Element management'),
+(6356, 1499841503, 1, 'admin', 78, '16', 'form_tpl', 'Editing Chunk (HTML Snippet)'),
+(6357, 1499841512, 1, 'admin', 79, '16', 'form_tpl', 'Saving Chunk (HTML Snippet)'),
+(6358, 1499841512, 1, 'admin', 76, '-', '-', 'Element management'),
+(6359, 1499841587, 1, 'admin', 78, '16', 'form_tpl', 'Editing Chunk (HTML Snippet)'),
+(6360, 1499841735, 1, 'admin', 79, '16', 'form_tpl', 'Saving Chunk (HTML Snippet)'),
+(6361, 1499841735, 1, 'admin', 78, '16', 'form_tpl', 'Editing Chunk (HTML Snippet)'),
+(6362, 1499841773, 1, 'admin', 79, '16', 'form_tpl', 'Saving Chunk (HTML Snippet)'),
+(6363, 1499841773, 1, 'admin', 78, '16', 'form_tpl', 'Editing Chunk (HTML Snippet)'),
+(6364, 1499846353, 1, 'admin', 24, '25', 'getID', 'Saving Snippet'),
+(6365, 1499846353, 1, 'admin', 22, '25', 'getID', 'Editing Snippet'),
+(6366, 1499847468, 1, 'admin', 76, '-', '-', 'Element management'),
+(6367, 1499847497, 1, 'admin', 16, '9', 'Главная', 'Editing template'),
+(6368, 1499847509, 1, 'admin', 76, '-', '-', 'Element management'),
+(6369, 1499847522, 1, 'admin', 78, '4', 'body', 'Editing Chunk (HTML Snippet)'),
+(6370, 1499847532, 1, 'admin', 76, '-', '-', 'Element management'),
+(6371, 1499847544, 1, 'admin', 22, '19', 'items', 'Editing Snippet'),
+(6372, 1499847761, 1, 'admin', 24, '19', 'items', 'Saving Snippet'),
+(6373, 1499847761, 1, 'admin', 22, '19', 'items', 'Editing Snippet'),
+(6374, 1499847833, 1, 'admin', 24, '19', 'items', 'Saving Snippet'),
+(6375, 1499847833, 1, 'admin', 22, '19', 'items', 'Editing Snippet'),
+(6376, 1499847950, 1, 'admin', 24, '19', 'items', 'Saving Snippet'),
+(6377, 1499847950, 1, 'admin', 22, '19', 'items', 'Editing Snippet'),
+(6378, 1499848044, 1, 'admin', 24, '19', 'items', 'Saving Snippet'),
+(6379, 1499848045, 1, 'admin', 22, '19', 'items', 'Editing Snippet'),
+(6380, 1499848079, 1, 'admin', 24, '19', 'items', 'Saving Snippet'),
+(6381, 1499848079, 1, 'admin', 22, '19', 'items', 'Editing Snippet'),
+(6382, 1499848106, 1, 'admin', 24, '19', 'items', 'Saving Snippet'),
+(6383, 1499848106, 1, 'admin', 22, '19', 'items', 'Editing Snippet'),
+(6384, 1499848144, 1, 'admin', 24, '19', 'items', 'Saving Snippet'),
+(6385, 1499848144, 1, 'admin', 22, '19', 'items', 'Editing Snippet'),
+(6386, 1499848196, 1, 'admin', 76, '-', '-', 'Element management'),
+(6387, 1499848550, 1, 'admin', 26, '-', '-', 'Refreshing site'),
+(6388, 1499848575, 1, 'admin', 76, '-', '-', 'Element management'),
+(6389, 1499848578, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6390, 1499848595, 1, 'admin', 79, '15', 'form', 'Saving Chunk (HTML Snippet)'),
+(6391, 1499848595, 1, 'admin', 76, '-', '-', 'Element management'),
+(6392, 1499848656, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6393, 1499848662, 1, 'admin', 79, '15', 'form', 'Saving Chunk (HTML Snippet)'),
+(6394, 1499848662, 1, 'admin', 76, '-', '-', 'Element management'),
+(6395, 1499848666, 1, 'admin', 78, '21', 'report_tpl', 'Editing Chunk (HTML Snippet)'),
+(6396, 1499848674, 1, 'admin', 76, '-', '-', 'Element management'),
+(6397, 1499848676, 1, 'admin', 78, '22', 'thank_tpl', 'Editing Chunk (HTML Snippet)'),
+(6398, 1499848750, 1, 'admin', 76, '-', '-', 'Element management'),
+(6399, 1499848756, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6400, 1499852430, 1, 'admin', 79, '15', 'form', 'Saving Chunk (HTML Snippet)'),
+(6401, 1499852430, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6402, 1499852750, 1, 'admin', 79, '15', 'form', 'Saving Chunk (HTML Snippet)'),
+(6403, 1499852750, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6404, 1499852828, 1, 'admin', 79, '15', 'form', 'Saving Chunk (HTML Snippet)'),
+(6405, 1499852828, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6406, 1499852869, 1, 'admin', 79, '15', 'form', 'Saving Chunk (HTML Snippet)'),
+(6407, 1499852869, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6408, 1499852885, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6409, 1499852979, 1, 'admin', 76, '-', '-', 'Element management'),
+(6410, 1499852980, 1, 'admin', 78, '15', 'form', 'Editing Chunk (HTML Snippet)'),
+(6411, 1499942095, 1, 'admin', 58, '-', 'MODX', 'Logged in');
 
 -- --------------------------------------------------------
 
@@ -3434,11 +3429,13 @@ INSERT INTO `srv37029_ufregru_manager_log` (`id`, `timestamp`, `internalKey`, `u
 -- Структура таблицы `srv37029_ufregru_manager_users`
 --
 
-CREATE TABLE `srv37029_ufregru_manager_users` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_manager_users` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL DEFAULT '',
-  `password` varchar(100) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains login information for backend users.';
+  `password` varchar(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Contains login information for backend users.' AUTO_INCREMENT=2 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_manager_users`
@@ -3453,11 +3450,12 @@ INSERT INTO `srv37029_ufregru_manager_users` (`id`, `username`, `password`) VALU
 -- Структура таблицы `srv37029_ufregru_membergroup_access`
 --
 
-CREATE TABLE `srv37029_ufregru_membergroup_access` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_membergroup_access` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `membergroup` int(10) NOT NULL DEFAULT '0',
-  `documentgroup` int(10) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for access permissions.';
+  `documentgroup` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for access permissions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3465,10 +3463,12 @@ CREATE TABLE `srv37029_ufregru_membergroup_access` (
 -- Структура таблицы `srv37029_ufregru_membergroup_names`
 --
 
-CREATE TABLE `srv37029_ufregru_membergroup_names` (
-  `id` int(10) NOT NULL,
-  `name` varchar(255) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for access permissions.';
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_membergroup_names` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for access permissions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3476,11 +3476,13 @@ CREATE TABLE `srv37029_ufregru_membergroup_names` (
 -- Структура таблицы `srv37029_ufregru_member_groups`
 --
 
-CREATE TABLE `srv37029_ufregru_member_groups` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_member_groups` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_group` int(10) NOT NULL DEFAULT '0',
-  `member` int(10) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for access permissions.';
+  `member` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_group_member` (`user_group`,`member`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for access permissions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3488,8 +3490,8 @@ CREATE TABLE `srv37029_ufregru_member_groups` (
 -- Структура таблицы `srv37029_ufregru_site_content`
 --
 
-CREATE TABLE `srv37029_ufregru_site_content` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_content` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `type` varchar(20) NOT NULL DEFAULT 'document',
   `contentType` varchar(50) NOT NULL DEFAULT 'text/html',
   `pagetitle` varchar(255) NOT NULL DEFAULT '',
@@ -3526,8 +3528,14 @@ CREATE TABLE `srv37029_ufregru_site_content` (
   `privatemgr` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Private manager document',
   `content_dispo` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-inline, 1-attachment',
   `hidemenu` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Hide document from menu',
-  `alias_visible` int(2) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains the site document tree.';
+  `alias_visible` int(2) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `parent` (`parent`),
+  KEY `aliasidx` (`alias`),
+  KEY `typeidx` (`type`),
+  FULLTEXT KEY `content_ft_idx` (`pagetitle`,`description`,`content`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Contains the site document tree.' AUTO_INCREMENT=106 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_site_content`
@@ -3580,7 +3588,7 @@ INSERT INTO `srv37029_ufregru_site_content` (`id`, `type`, `contentType`, `paget
 (44, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs3', '', 1, 0, 0, 2, 0, '', '<p>Пакет &laquo;Профи&raquo;</p>', 1, 14, 3, 1, 0, 1, 1394604887, 1, 1498144582, 0, 0, 0, 1394604887, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (45, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs4', '', 1, 0, 0, 2, 0, '', '<p>Пакет &laquo;Электронный&raquo;</p>', 1, 14, 1, 1, 0, 1, 1394604909, 1, 1499430514, 0, 0, 0, 1394604909, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (46, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs5', '', 1, 0, 0, 2, 0, '', '<p>Пакет &laquo;Помощь бухгалтера&raquo;</p>', 1, 14, 5, 1, 0, 1, 1394604958, 1, 1499430543, 0, 0, 0, 1394604958, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
-(69, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs23', '', 1, 0, 0, 2, 0, '', '<p>Изготавливается ключ в течение дня</p>', 1, 14, 8, 1, 0, 1, 1395747166, 1, 1499430563, 0, 0, 0, 1395747166, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
+(69, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs23', '', 1, 0, 0, 2, 0, '', '<p>Изготавливается ключ в течение дня</p>', 1, 14, 8, 1, 0, 1, 1395747166, 1, 1499838901, 0, 0, 0, 1395747166, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (47, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs6', '', 1, 0, 0, 2, 0, '', '<p>Изготавливается ключ в течение 3 дней</p>', 1, 14, 7, 1, 0, 1, 1394605006, 1, 1499430555, 0, 0, 0, 1394605006, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (48, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs7', '', 1, 0, 0, 2, 0, '', '<p>Пакет &laquo;Полноценный бухгалтер&raquo;</p>', 1, 14, 6, 1, 0, 1, 1394605028, 1, 1499430898, 0, 0, 0, 1394605028, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (49, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs8', '', 1, 0, 0, 28, 0, '', '<p>После предоставления необходимого перечня документов (в электроном или бумажном) и оплаты любым удобным способом, высылаем Вам отчетность на электронную почту или передаем ее в нашем офисе. Срок подготовки документов -1 час. Подачу производите самостоятельно.</p>', 1, 14, 0, 1, 0, 1, 1394605201, 1, 1498807969, 0, 0, 0, 1394605201, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
@@ -3591,25 +3599,25 @@ INSERT INTO `srv37029_ufregru_site_content` (`id`, `type`, `contentType`, `paget
 (55, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs14', '', 1, 0, 0, 29, 0, '', '<ul> \r\n	<li>каждый дополнительный источник дохода или налоговый вычет</li> \r\n</ul>', 1, 14, 2, 1, 0, 1, 1394605509, 1, 1394695238, 0, 0, 0, 1394605509, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (56, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs15', '', 1, 0, 0, 29, 0, '', '<ul> \r\n	<li>подготовка документов для отправки почтой</li> \r\n</ul>', 1, 14, 3, 1, 0, 1, 1394605535, 1, 1394695247, 0, 0, 0, 1394605535, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (57, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs16', '', 1, 0, 0, 29, 0, '', '<ul> \r\n	<li>отправка декларации почтой</li> \r\n</ul>', 1, 14, 4, 1, 0, 1, 1394605562, 1, 1394695258, 0, 0, 0, 1394605562, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
-(58, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs17', '', 1, 0, 0, 30, 0, '', '<p>Вы сами ведете финансово-хозяйственную деятельность в  программе 1С, базу которой высылаете нам для уточнений и замечаний, ее корректировки, формирования и подачи налоговой отчетности в налоговые органы и фонды. </p>', 1, 14, 0, 1, 0, 1, 1394605677, 1, 1395229008, 0, 0, 0, 1394605677, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
+(58, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs17', '', 1, 0, 0, 30, 0, '', '<p>Вы сами ведете финансово-хозяйственную деятельность в  программе 1С, базу которой высылаете нам для уточнений и замечаний, ее корректировки, формирования и подачи налоговой отчетности в налоговые органы и фонды. </p>', 1, 14, 0, 1, 0, 1, 1394605677, 1, 1395229008, 0, 0, 0, 1394605677, 1, '', 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `srv37029_ufregru_site_content` (`id`, `type`, `contentType`, `pagetitle`, `longtitle`, `description`, `alias`, `link_attributes`, `published`, `pub_date`, `unpub_date`, `parent`, `isfolder`, `introtext`, `content`, `richtext`, `template`, `menuindex`, `searchable`, `cacheable`, `createdby`, `createdon`, `editedby`, `editedon`, `deleted`, `deletedon`, `deletedby`, `publishedon`, `publishedby`, `menutitle`, `donthit`, `haskeywords`, `hasmetatags`, `privateweb`, `privatemgr`, `content_dispo`, `hidemenu`, `alias_visible`) VALUES
 (59, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs18', '', 1, 0, 0, 30, 0, '', '<p>Предоставляете нашему бухгалтеру  первичную документацию в любом виде: электронной почтой или на бумажном носителе, предпочтительно копии. Вся первичная документация обрабатывается, вносится в программу, формируется, подготавливается и в установленные сроки сдается отчетность в государственные органы.\r\n	От Вас необходимо своевременно предоставлять первичную документацию в виде: актов, накладных, счетов-фактур, Z- отчетов и т.д.</p>\r\n', 1, 14, 1, 1, 0, 1, 1394605699, 1, 1395225155, 0, 0, 0, 1394605699, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (60, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs19', '', 1, 0, 0, 30, 0, '', '<p>Оказание бухгалтерских услуги от «А» до «Я», т.е. подготовка первичной документации и по Вашему желанию ведение «Банк-клиента»  по р/с компании. </p>', 1, 14, 2, 1, 0, 1, 1394605731, 1, 1395225120, 0, 0, 0, 1394605731, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
-(70, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs24', '', 1, 0, 0, 2, 0, '', '<p><span style="font-size: 90%;">* стоимость подключения включена в 12 месяцев бухгалтерского обслуживания. При расторжении договора ранее 12 мес., стоимость подключения возмещается в 100 % размере</span></p>', 1, 14, 9, 1, 0, 1, 1395747203, 1, 1499430572, 0, 0, 0, 1395747203, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
+(70, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs24', '', 1, 0, 0, 2, 0, '', '<p><span style="font-size: 90%;">* стоимость подключения включена в 12 месяцев бухгалтерского обслуживания. При расторжении договора ранее 12 мес., стоимость подключения возмещается в 100 % размере</span></p>', 1, 14, 9, 1, 0, 1, 1395747203, 1, 1499840453, 0, 0, 0, 1395747203, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (71, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs25', '', 1, 0, 0, 2, 0, '', '<p>на 1 организация</p>', 1, 14, 10, 1, 0, 1, 1395747225, 1, 1499430583, 0, 0, 0, 1395747225, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (72, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs26', '', 1, 0, 0, 2, 0, '', '<p>при предоставлении отчетности в виде выгрузки</p>', 1, 14, 11, 1, 0, 1, 1395747259, 1, 1499430592, 0, 0, 0, 1395747259, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (73, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs28', '', 1, 0, 0, 2, 0, '', '<p>электронная</p>', 1, 14, 13, 1, 0, 1, 1395747302, 1, 1499430617, 0, 0, 0, 1395747302, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (74, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs29', '', 1, 0, 0, 2, 0, '', '<p>с печатью налогового органа</p>', 1, 14, 14, 1, 0, 1, 1395747354, 1, 1499430624, 0, 0, 0, 1395747354, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (75, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs30', '', 1, 0, 0, 2, 0, '', '<p>расширенная - с паспортными данными участника и генерального директора</p>', 1, 14, 15, 1, 0, 1, 1395747387, 1, 1499430631, 0, 0, 0, 1395747387, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (77, 'document', 'text/html', 'Регистрация обособленного<br> подразделения<br> 2500 рублей', '', '', 'registracziya-obosoblennogo-podrazdeleniya-2500-rublej', '', 1, 0, 0, 5, 0, '', '<ul>\r\n<li>подготовка заявление о регистрации обособленного подразделения</li>\r\n<li>получение уведомления о регистрации обособленного подразделения</li>\r\n</ul>', 1, 18, 3, 1, 0, 1, 1395772787, 1, 1395838567, 0, 0, 0, 1395772787, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
-(78, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs27', '', 1, 0, 0, 2, 0, '', '<p>при внесении отчетности в ручную (нет выгрузки или выгрузка с не последними обновлениями)</p>', 1, 14, 12, 1, 0, 1, 1400503098, 1, 1499430601, 0, 0, 0, 1400503098, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
+(78, 'document', 'text/html', 'Новый ресурс', '', '', 'novyij-resurs27', '', 1, 0, 0, 2, 0, '', '<p>при внесении отчетности в ручную (нет выгрузки или выгрузка с не последними обновлениями)</p>', 1, 14, 12, 1, 0, 1, 1400503098, 1, 1499840541, 0, 0, 0, 1400503098, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (79, 'document', 'text/html', 'Полезная информация', '', '', 'poleznaya-informacziya', '', 1, 0, 0, 65, 1, '', '', 1, 20, 3, 1, 0, 1, 1403517912, 1, 1498740815, 0, 0, 0, 1403517912, 1, 'Полезная информация', 0, 0, 0, 0, 0, 0, 0, 1),
 (80, 'document', 'text/html', 'С  1 января 2015 года у физических лиц, сдающих жилые и не жилые помещения, принадлежащие им на праве собственности, появиться возможность вместо 13% НДФЛ  оплачивать другим налогом в размере 10%. ', 'Упрощенная система налогообложения для физических лиц', '', 'usn-fizlica', '', 1, 0, 0, 79, 0, '', '<p>С&nbsp; 1 января 2015 года у физических лиц, сдающих жилые и не жилые помещения, принадлежащие им на праве собственности, появиться возможность вместо 13% НДФЛ&nbsp; оплачивать другим налогом в размере 10%.</p>\r\n<p>В Налоговом Кодексе РФ вносятся изменения, которые позволяют физическим лицам - арендодателям, не оформленных как Индивидуальные предприниматели, применять упрощённую систему налогообложения при сдаче помещения.</p>\r\n<p>Оплата 10 % налога освобождает от уплаты НДФЛ при сдаче помещения в аренду.</p>\r\n<p>Размер ежемесячных платежей не может превышать:</p>\r\n<p>- по жилым помещениям &ndash; 5000 р.</p>\r\n<p>- по дачам/садовым домикам &ndash; 3000 р.</p>\r\n<p>- по гаражам &ndash; 500 р.</p>\r\n<p>Оплатить налог необходимо полностью не позже 20 дней, с момента начала действия договора в налоговую инспекцию по месту сдаваемого помещения.</p>\r\n<p>Для перехода на упрощённую систему налогообложения (УСН) в налоговую инспекцию предоставляется документы:</p>\r\n<p>- заявление о применении УСН,</p>\r\n<p>- копии правоустанавливающих документов,</p>\r\n<p>- копии документов, подтверждающих уплату налога.</p>', 1, 17, 1, 1, 0, 1, 1403548159, 1, 1403867435, 0, 0, 0, 1403548159, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (81, 'document', 'text/html', 'Рассматривает законопроект налоговых каникул с 0 % ставкой налога.', '', '', 'nalogovye-kanikuly', '', 1, 0, 0, 79, 0, '', '<p>Государственная дума рассматривает новый законопроект, который предусматривает возможность&nbsp; налоговых каникул для Индивидуальных предпринимателей, а так же малых компаний, находящихся на упрощённой системе налогообложения.</p>\r\n<p>Налоговые каникулы&nbsp; - это ведение деятельности с нулевой налоговой ставкой. Каникулы действуют в течение двух летнего срока с момента <a target="_blank" href="http://www.ufreg.com/registraciya/registraciya-ooo.html">регистрации ООО</a> или <a target="_blank" href="http://ufreg.com/registraciya/registraciya-ip.html">ИП</a>.</p>\r\n<p>За региональными органами предусматривается&nbsp; принятие решения, в отношение &nbsp;видов деятельности, по которым &nbsp;нельзя будет применять налоговые каникулы.</p>\r\n<p>Дополнительным плюсом данного законопроекта &nbsp;является то, что при наличии сотрудников организация или ИП оплачивает меньше страховых взносов - 17% (ФСС-05% ФФОМС-0,5 ПФР-16%).</p>\r\n<p>Будем надеяться, что законопроект примут, так как он очень облегчит &laquo;жизнь&raquo; вновь созданных ООО и ИП.</p>', 1, 17, 2, 1, 0, 1, 1403548744, 1, 1404741359, 0, 0, 0, 1404741359, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (82, 'document', 'text/html', 'Идет II квартал  сдачи отчетности.', '', '', 'zagolovok-tretej-novosti', '', 1, 0, 0, 79, 0, '', '<p>Напоминаем, что компаниям, находящимся на ОСН с 2014 года, можно сдавать отчетность, только в электронном виде и никак иначе.</p>\r\n<p>Отчетность в фонд социального страхования и в пенсионный фонд можно сдать любым из способов, главное, вовремя!</p>\r\n<p>Мы предлагаем услугу по сдаче отчетности через электронный сервис, стоимость 700 рублей.</p>\r\n<p>Желаем Вас сдать все вовремя и безошибочно, удачного Вам отчетного периода!</p>', 1, 17, 0, 1, 0, 1, 1403548751, 1, 1406121688, 0, 0, 0, 1406121688, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (84, 'document', 'text/html', 'Информация по обособленному подразделению', '', '', 'obosoblenoe-podrazdelenie', '', 1, 0, 0, 79, 0, '', '<p>Полезная информация по зарегистрированному обособленному подразделению &ndash; то, что необходимо знать:</p>\r\n<p>- НДФЛ по сотрудникам, работающим в обособленном подразделении, оплачивается в налоговую инспекцию, за которой закреплено подразделение, также в эту налоговую сдается форма 2-НДФЛ.</p>\r\n<p>- при подготовке Декларации по налогу на прибыль по фирме, находящейся на ОСН, дополнительно заполняется Приложение №5.</p>\r\n<p>- согласно ст.113 НК РФ, за несвоевременную подачу 2-НДФЛ &nbsp;и Декларации, указанной выше, предусмотрен штраф в размере от 1000 рублей до 30% от суммы налога, прописанного в Декларации.</p>\r\n<p>Рассматривалось понятие &laquo;Иное обособленное подразделение&raquo;.</p>\r\n<p>Для более детальной консультации обращайтесь по телефону.</p>\r\n<p></p>', 1, 17, 4, 1, 0, 1, 1409818549, 1, 1409818719, 0, 0, 0, 1409818549, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (83, 'document', 'text/html', 'В ближайшем будущем возможно не будет взиматься налог НДФЛ с продажи жилья. ', '', '', 'ne-budet-vzimatcy-nalog-ndfl', '', 1, 0, 0, 79, 0, '', '<p>Минфин подготовил поправку в Госдуму и направил на рассмотрение (к гл.23 НК РФ).</p>\r\n<p>Согласно поправке не будет взиматься налог НДФЛ с продажи жилого имущества:</p>\r\n<p>- если жилье единственное (срок владения не имеет значения),</p>\r\n<p>- при соблюдении трех правил:</p>\r\n<p>1 - стоимость не более 5 млн. р.,</p>\r\n<p>2 - площадью не более 50 кв.м.,</p>\r\n<p>3 &ndash; в собственности не менее 3-х лет (хотя этот&nbsp; пункт оставили на усмотрение региональных властей,&nbsp; которые могут увеличить срок владения до 10 лет).</p>\r\n<p>Даты принятия, и в каком виде примут поправку, пока что нет.</p>\r\n<p>Желаете заполнить декларацию <a href="podgotovka-deklaraczij.html">3-НДФЛ</a>?</p>', 1, 17, 3, 1, 0, 1, 1408357054, 1, 1408357054, 0, 0, 0, 1408357054, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
-(95, 'document', 'text/html', 'Виды деятельности для применения налоговых каникул.', '', '', 'nalogovye-kanikuly-vidy-deyatelnosti', '', 1, 0, 0, 79, 0, '', '<p>10 марта впервые вышел перечень видов деятельности, по которым могут применяться налоговые каникулы и патентная система налогообложения в г. Москве.</p>\r\n<p>Для вновь созданных ИП возможно применение налоговых каникул для следующих видов деятельности: &laquo;Производство пищевых продуктов и напитков; одежды; выделка и крашение меха; производство обуви; целлюлозы, древесной массы, бумаги, картона и изделий из них; резиновых и пластмассовых изделий; мебели; музыкальных инструментов; спортивных товаров; игр и игрушек; метел и щеток; готовых металлических изделий; офисного оборудования и вычислительной техники; машин и оборудования; электрических машин и электрооборудования; аппаратуры для радио, телевидения и связи; изделий медицинской техники, средств измерений, оптических приборов и аппаратуры, часов; обработка древесины и производство изделий из дерева и пробки; издательская и полиграфическая деятельность, тиражирование записанных носителей информации и обработка вторичного сырья, здравоохранение; социальные услуги; услуги в системе образования; деятельность в области спорта&raquo;.</p>\r\n<p>Перечень видов деятельности для применения патентной системы налогообложения ИП расширен. Теперь можно получить патент, если Вы занимаетесь репетиторством, переводом или проводите экскурсии.</p>\r\n<p>&nbsp;</p>', 1, 17, 8, 1, 0, 1, 1426165730, 1, 1426165730, 0, 0, 0, 1426165730, 1, '', 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `srv37029_ufregru_site_content` (`id`, `type`, `contentType`, `pagetitle`, `longtitle`, `description`, `alias`, `link_attributes`, `published`, `pub_date`, `unpub_date`, `parent`, `isfolder`, `introtext`, `content`, `richtext`, `template`, `menuindex`, `searchable`, `cacheable`, `createdby`, `createdon`, `editedby`, `editedon`, `deleted`, `deletedon`, `deletedby`, `publishedon`, `publishedby`, `menutitle`, `donthit`, `haskeywords`, `hasmetatags`, `privateweb`, `privatemgr`, `content_dispo`, `hidemenu`, `alias_visible`) VALUES
+(95, 'document', 'text/html', 'Виды деятельности для применения налоговых каникул.', '', '', 'nalogovye-kanikuly-vidy-deyatelnosti', '', 1, 0, 0, 79, 0, '', '<p>10 марта впервые вышел перечень видов деятельности, по которым могут применяться налоговые каникулы и патентная система налогообложения в г. Москве.</p>\r\n<p>Для вновь созданных ИП возможно применение налоговых каникул для следующих видов деятельности: &laquo;Производство пищевых продуктов и напитков; одежды; выделка и крашение меха; производство обуви; целлюлозы, древесной массы, бумаги, картона и изделий из них; резиновых и пластмассовых изделий; мебели; музыкальных инструментов; спортивных товаров; игр и игрушек; метел и щеток; готовых металлических изделий; офисного оборудования и вычислительной техники; машин и оборудования; электрических машин и электрооборудования; аппаратуры для радио, телевидения и связи; изделий медицинской техники, средств измерений, оптических приборов и аппаратуры, часов; обработка древесины и производство изделий из дерева и пробки; издательская и полиграфическая деятельность, тиражирование записанных носителей информации и обработка вторичного сырья, здравоохранение; социальные услуги; услуги в системе образования; деятельность в области спорта&raquo;.</p>\r\n<p>Перечень видов деятельности для применения патентной системы налогообложения ИП расширен. Теперь можно получить патент, если Вы занимаетесь репетиторством, переводом или проводите экскурсии.</p>\r\n<p>&nbsp;</p>', 1, 17, 8, 1, 0, 1, 1426165730, 1, 1426165730, 0, 0, 0, 1426165730, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (85, 'document', 'text/html', 'Изменение налоговой ставки налога на имущество физических лиц.', '', '', 'nalog-na-imychestvo', '', 1, 0, 0, 79, 0, '', '<p><span style="font-size: 100%;">С 2015 года изменяется ставка налога на имущество физических лиц (в гл.32 НК РФ).</span></p>\r\n<p><span style="font-size: 100%;">Налоговая база, т.е. сумма с которой будет взиматься налог, определяется по кадастровой стоимости объекта.</span></p>\r\n<table style="width: 100%;" border="0">\r\n<tbody>\r\n<tr>\r\n<td colspan="2" class="title"><span style="font-size: 100%;">В г. Москве установлены следующие ставки:</span></td>\r\n</tr>\r\n<tr>\r\n<td><span style="font-size: 100%;">до 10 млн</span></td>\r\n<td align="right"><span style="font-size: 100%;">0,1%</span></td>\r\n</tr>\r\n<tr>\r\n<td><span style="font-size: 100%;">до 20 млн</span></td>\r\n<td align="right"><span style="font-size: 100%;">0,15%</span></td>\r\n</tr>\r\n<tr>\r\n<td><span style="font-size: 100%;">до 50 млн</span></td>\r\n<td align="right"><span style="font-size: 100%;">0,2%</span></td>\r\n</tr>\r\n<tr>\r\n<td><span style="font-size: 100%;">до 300 млн</span></td>\r\n<td align="right"><span style="font-size: 100%;">0,3%</span></td>\r\n</tr>\r\n<tr>\r\n<td><span style="font-size: 100%;">свыше 300 млн</span></td>\r\n<td align="right"><span style="font-size: 100%;">2%</span></td>\r\n</tr>\r\n<tr></tr>\r\n</tbody>\r\n</table>\r\n<p></p>\r\n<p><span style="font-size: 100%;">При наличии в собственности одной квартиры, налог не уплачивается.</span></p>\r\n<p><span style="font-size: 100%;">При наличии в собственности двух квартир и более (доля в квартире тоже учитывается), можно выбрать с какой квартиры платить налог, предоставив в налоговую инспекцию по месту прописки заявление, прописав в нем данные по квартирам, и в отношении какой из квартир Вы хотите получить льготу на имущественный налог.</span></p>\r\n<p><span style="font-size: 100%;">Если же Вами не предоставлена информация с какой квартиры взимать налог, то налоговая инспекция, по умолчанию, будет облагать налогом первую из приобретённых квартир.</span></p>\r\n<p><span style="font-size: 100%;">Налог уплачивается до 15 ноября.</span></p>', 1, 17, 5, 1, 0, 1, 1417091958, 1, 1499345218, 0, 0, 0, 1417091958, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (86, 'reference', 'text/html', 'Услуги', '', '', 'uslugi', '', 1, 0, 0, 65, 1, '', '30', 1, 3, 2, 1, 0, 1, 1417516248, 1, 1417773974, 0, 0, 0, 1417516248, 1, 'Услуги', 0, 0, 0, 0, 0, 0, 0, 0),
 (92, 'document', 'text/html', 'Электронная подача отчетности', '', '', 'elektronnay-sdacha-otcheta', '', 1, 0, 0, 86, 0, '', '<p><strong>Электронная подача отчетности и корректировок.<br /></strong></p>\r\n<p>С 2014 года отчетность в налоговую инспекцию необходимо сдавать &nbsp;электронно.</p>\r\n<p>Стоимость услуги по электронной подаче отчётности:</p>\r\n<table cellspacing="0" cellpadding="0" border="0">\r\n<tbody>\r\n<tr>\r\n<td>\r\n<p>При предоставлении отчетности в виде выгрузки в 1С.</p>\r\n</td>\r\n<td><span style="color: #057ec8;"><b>1000</b></span></td>\r\n</tr>\r\n<tr>\r\n<td>\r\n<p>При ручном вводе отчетности в электронную систему.</p>\r\n</td>\r\n<td><span style="color: #057ec8;"><b>1200*</b></span></td>\r\n</tr>\r\n</tbody>\r\n</table>\r\n<p><span style="font-size: 90%;">* стоимость отправки НДС с 1 квартала 2015 года при ручном вводе будет иным, уточните у сотрудника компании.</span></p>\r\n<p><strong><span style="color: #800000;">Сдаем отчётность и уточнения к ним во все налоговые инспекции России.</span></strong></p>\r\n<p><span style="color: #333399;">Информируем наших клиентов!</span></p>\r\n<p>Отчетность необходимо предоставлять правильно заполненную (реквизиты компании, графы и суммы) при наличии ошибки система не дает ее отправить.</p>\r\n<table border="0">\r\n<tbody>\r\n<tr>\r\n<td>Внесение исправлений в отчетность.</td>\r\n<td><span style="color: #057ec8;"><b>500</b></span></td>\r\n</tr>\r\n</tbody>\r\n</table>\r\n<p>Для сдачи отчётности необходимо предоставить :</p>\r\n<p>- саму отчетность;</p>\r\n<p>- копию паспорта генерального директора (страницы с фото и пропиской);</p>\r\n<p>- копию СНИЛСа генерального директора (свидетельство из пенсионного фонда).</p>\r\n<p>Наши плюсы для Вашей компании при электронной подаче отчетности именно у нас:</p>\r\n<ul>\r\n<ul>\r\n<ul>\r\n<li>Приятная цена</li>\r\n<li>Качество обслуживания</li>\r\n<li>Возможность получение услуги дистанционно, т.е. не покидая своего офиса или дома.</li>\r\n<li>Бесплатное! предоставление писем и требований налоговой инспекции по Вашей компании.</li>\r\n</ul>\r\n</ul>\r\n</ul>\r\n<p>Способы оплаты услуги можно посмотреть <a href="platezhi.html">тут.</a></p>', 1, 15, 5, 1, 0, 1, 1418899774, 1, 1498144971, 0, 0, 0, 1418899774, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
@@ -3621,7 +3629,8 @@ INSERT INTO `srv37029_ufregru_site_content` (`id`, `type`, `contentType`, `paget
 (99, 'document', 'text/html', 'Акция', '', '', 'akciya', '', 1, 0, 0, 0, 0, '', '<h1 style="font-weight: normal; font-size: 20px;">БУХГАЛТЕРСКОЕ ОБСЛУЖИВАНИЕ - СДАЙ ОТЧЕТ ВОВРЕМЯ!</h1>\r\n<p>Бухгалтера Юридической фирмы РЕГИСТРАЛ помогут сдать электронно Вашу отчетность при формировании выгрузки из 1С в форматах 1С или Excel, сформируют отчетность самостоятельно на основании предоставленной первичной документации или восстановят и сдадут всю бухгалтерию по Вашей организации.</p>\r\n<p>ВСЕ цены и нижеуказанные предложения и акции действительны ограниченное количество времени и только для новых клиентов.<br /><br /></p>\r\n<table border="0" cellpadding="0" cellspacing="0">\r\n<tbody>\r\n<tr>\r\n<td>\r\n<p><span style="color: #3366ff;"><a href="[~92~]" target="_blank" style="color: #057ec8;"><span style="color: #3366ff;"><b>&laquo;НДС электронно&raquo;</b></span></a></span></p>\r\n<p><br />При предоставлении отчетности в виде выгрузки из 1С за каждый файл выгрузки оплачивается по 500 рублей (НДС, прибыль, баланс, декларация, среднесписочная численность, имущество&hellip;).</p>\r\n<p>При заказе электронной выгрузки для 3-х и более организаций одновременно действует скидка 20%.</p>\r\n<p>1 отчет = 400 рублей.</p>\r\n<p><br /> Приводи друга &ndash; получи ПОДАРОК <img src="assets/images/podarochnie-nabori(2).jpg" style="vertical-align: middle;" height="100" width="150" /><br /><br /></p>\r\n</td>\r\n<td style="width: 90px; color: #057ec8;" align="center">\r\n<p><img src="assets/images/akcia.png" alt="Акция" /></p>\r\n<p><span style="color: #3366ff;">от 400 р.</span></p>\r\n</td>\r\n</tr>\r\n<tr>\r\n<td>\r\n<p><span style="color: #3366ff;"><a href="[~28~]" target="_blank" style="color: #057ec8;"><span style="color: #3366ff;"><b>&laquo;Нулевой отчет&raquo;</b></span></a></span></p>\r\n<p><br />Подготовка пакета документов для подачи нулевой отчетности &ndash; 900 рублей</p>\r\n<p>ОСН ИП 3-НДФЛ подготовка и подача под ключ - 1500 рублей<br /> УСН нулевая отчетность за 1 квартал (для 1,2,3 кварталов) &ndash; 2000 рублей<br /> УСН 4 квартал &ndash; 3000 рублей</p>\r\n<p>ОСН нулевая отчетность за 1 квартал (для 1,2,3 кварталов) &ndash; 2700 рублей</p>\r\n<p>ОСН 4 квартал &ndash; 4000 рублей<br /><br /></p>\r\n</td>\r\n<td style="width: 90px; color: #057ec8;" align="center"><span style="color: #3366ff;">от 900 р.</span></td>\r\n</tr>\r\n<tr>\r\n<td>\r\n<p><span style="color: #3366ff;"><a href="[~30~]" target="_blank" style="color: #057ec8;"><span style="color: #3366ff;"><b>&laquo;Бухгалтерское обслуживание&raquo;</b></span></a></span></p>\r\n<p><br />Стоимость рассчитывается индивидуально для каждой организации, исходя из условий и требований к работе с Вашей компанией, количества производимых ежемесячных<br /> операций и количества сотрудников, находящихся в штате компании.<br /><br /></p>\r\n</td>\r\n<td style="width: 90px; color: #057ec8;" align="center"><span style="color: #3366ff;">от 3000 р.</span></td>\r\n</tr>\r\n</tbody>\r\n</table>', 1, 17, 7, 1, 0, 1, 1453281318, 1, 1453746984, 0, 0, 0, 1453281318, 1, '', 0, 0, 0, 0, 0, 0, 1, 1),
 (101, 'document', 'text/html', 'С 2016 года появился новый ежеквартальный отчёт в налоговую инспекцию – 6 НДФЛ.', '', '', 's-2016-goda-poyavilsya-novyj-ezhekvartalnyj-otchyot-v-nalogovuyu-inspekciyu-–-6-ndfl', '', 1, 0, 0, 79, 0, '', '<p><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">С 2016 года появился новый ежеквартальный отчёт в налоговую инспекцию &ndash; 6 НДФЛ.</span><br style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff;" /><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">Данный отчёт сдают все компании независимо от системы налогообложения, а также ИП-работодатели.</span><br style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff;" /><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">Сдаётся 6-НДФЛ с первого квартала 2016 года.</span><br style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff;" /><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">Сроки предоставления данного отчёта:</span><br style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff;" /><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">I квартал &ndash; по 4 мая (перенесено из-за праздников),</span><br style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff;" /><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">II квартал &ndash; по 31 июля</span><br style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff;" /><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">III квартал &ndash; по 31 октября</span><br style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff;" /><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">IV квартал &ndash; по 1 апреля.</span><br style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff;" /><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">В отчете отражается общая информация по: сумме начисления дохода, сумме налоговых вычетов, количеству сотрудников и прочее.</span><br style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff;" /><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">При не своевременной подаче отчёта предусмотрен штраф &ndash; 1000р., при не сдаче возможна блокировка р/с.</span><br style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff;" /><span style="color: #000000; font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 15px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 20.8px; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: #ffffff;">Если Вы сомневаетесь в правильности заполнения отчёта, обратитесь к нашим специалистам, которые грамотно составят&nbsp; и сдадут отчёт электронно.</span></p>', 1, 17, 10, 1, 0, 1, 1454331261, 1, 1454331261, 0, 0, 0, 1454331261, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (102, 'document', 'text/html', 'Сплошное Федеральное статистическое наблюдение за деятельностью субъектов малого и среднего предпринимательства в 2016 году по итогам 2015 года.', '', '', 'sploshnoe-federalnoe-statisticheskoe-nablyudenie-za-deyatelnostyu-subektov-malogo-i-srednego-predprinimatelstva-v-2016-godu-po-itogam-2015-goda', '', 1, 0, 0, 79, 0, '', '<p><b>Сплошное Федеральное статистическое наблюдение за деятельностью субъектов малого и среднего предпринимательства в 2016 году по итогам 2015 года.</b></p>\r\n<p>Все&nbsp;компании, относящиеся к субъектам малого и среднего предпринимательства (до 100 сотрудников и выручка не более 2 миллиардов в год), обязаны сдать отчетность в органы статистики по форме МП-СПза 2015 год. Согласно ст.5 ФЗ №209 отчетность сдается в Росстат до &laquo;01&raquo; апреля 2016г.</p>\r\n<p>Штраф за непредставление отчетности для должностных лиц составляет 10 000 - 20&nbsp;000 рублей, а на компанию от 20&nbsp;000 до 70&nbsp;000 рублей (при повторном нарушении до 150&nbsp;000 рублей).</p>\r\n<p>Вы можете воспользоваться услугами Юридической фирмы РЕГИСТРАЛ для формирования и, при необходимости,электронной подачи отчетов в органы статистики.</p>', 1, 17, 11, 1, 0, 1, 1456306658, 1, 1456306658, 0, 0, 0, 1456306658, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
-(103, 'document', 'text/html', 'СЗВ-М сдают все компания без исключения!', '', '', 'szv-m-sdayut-vse-kompaniya-bez-isklyucheniya!', '', 1, 0, 0, 79, 0, '', '<p>Форма СЗВ-М сдается компанией обязательно, даже если в организации числится только учредитель и он же является руководителем фирмы.</p>\r\n<p>По итогам <b><span style="text-decoration: underline;">каждого месяца</span>,</b> все страхователи обязаны сдавать отчет по форме СЗВ-М в Пенсионный фонд РФ.</p>\r\n<p>В отчете отражаются все сотрудники компании независимо от того, производятся ли выплаты и иные вознаграждения работникам за месяц, т.к. это не является основанием для непредставления формы в ПФР.</p>\r\n<p>Подводя итог письма <b>ПФ РФ от 06.05.2016 № 08-22/6356</b><b> </b>можно сказать, что<b> </b>все фирмы, вне зависимости от того, платите вы сотруднику или нет, который числится в компании, а у любой компании есть Директор!, обязаны сдавать отчет СЗВ-М ежемесячно. И в случае непредставления формы, скорее всего, на компанию будет наложен предусмотренный штраф в размере от 500 рублей.</p>', 1, 17, 12, 1, 0, 1, 1465285964, 1, 1465285964, 0, 0, 0, 1465285964, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
+(103, 'document', 'text/html', 'СЗВ-М сдают все компания без исключения!', '', '', 'szv-m-sdayut-vse-kompaniya-bez-isklyucheniya!', '', 1, 0, 0, 79, 0, '', '<p>Форма СЗВ-М сдается компанией обязательно, даже если в организации числится только учредитель и он же является руководителем фирмы.</p>\r\n<p>По итогам <b><span style="text-decoration: underline;">каждого месяца</span>,</b> все страхователи обязаны сдавать отчет по форме СЗВ-М в Пенсионный фонд РФ.</p>\r\n<p>В отчете отражаются все сотрудники компании независимо от того, производятся ли выплаты и иные вознаграждения работникам за месяц, т.к. это не является основанием для непредставления формы в ПФР.</p>\r\n<p>Подводя итог письма <b>ПФ РФ от 06.05.2016 № 08-22/6356</b><b> </b>можно сказать, что<b> </b>все фирмы, вне зависимости от того, платите вы сотруднику или нет, который числится в компании, а у любой компании есть Директор!, обязаны сдавать отчет СЗВ-М ежемесячно. И в случае непредставления формы, скорее всего, на компанию будет наложен предусмотренный штраф в размере от 500 рублей.</p>', 1, 17, 12, 1, 0, 1, 1465285964, 1, 1465285964, 0, 0, 0, 1465285964, 1, '', 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `srv37029_ufregru_site_content` (`id`, `type`, `contentType`, `pagetitle`, `longtitle`, `description`, `alias`, `link_attributes`, `published`, `pub_date`, `unpub_date`, `parent`, `isfolder`, `introtext`, `content`, `richtext`, `template`, `menuindex`, `searchable`, `cacheable`, `createdby`, `createdon`, `editedby`, `editedon`, `deleted`, `deletedon`, `deletedby`, `publishedon`, `publishedby`, `menutitle`, `donthit`, `haskeywords`, `hasmetatags`, `privateweb`, `privatemgr`, `content_dispo`, `hidemenu`, `alias_visible`) VALUES
 (104, 'document', 'text/html', 'O компании', '', '', 'o-kompanii', '', 1, 0, 0, 65, 0, '', '', 1, 3, 1, 1, 0, 1, 1499319888, 1, 1499319946, 0, 0, 0, 1499319888, 1, '', 0, 0, 0, 0, 0, 0, 0, 1),
 (105, 'document', 'text/html', 'спасибо', '', '', 'spasibo', '', 1, 0, 0, 0, 0, '', '<p><strong>Спасибо, что воспользовались формой обратной связи на нашем сайте.</strong></p>\r\n<p>Ваше сообщение будет рассмотрено в кротчайшие сроки, и, если оно требует ответа, Вы обязательно его получите.</p>\r\n<p>Отправленная информация:</p>\r\n<ul>\r\n<li><b>Ваше имя:</b> [*author*]</li>\r\n<li><b>Ваш телефон:</b> [+phone+]</li>\r\n<li><b>Ваш e-mail:</b> [+email+]</li>\r\n<li><b>Текст сообщения:</b> [+text+]</li>\r\n</ul>', 1, 21, 8, 1, 0, 1, 1499676269, 1, 1499687099, 0, 0, 0, 1499676269, 1, '', 0, 0, 0, 0, 0, 0, 1, 1);
 
@@ -3631,9 +3640,11 @@ INSERT INTO `srv37029_ufregru_site_content` (`id`, `type`, `contentType`, `paget
 -- Структура таблицы `srv37029_ufregru_site_content_metatags`
 --
 
-CREATE TABLE `srv37029_ufregru_site_content_metatags` (
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_content_metatags` (
   `content_id` int(11) NOT NULL DEFAULT '0',
-  `metatag_id` int(11) NOT NULL DEFAULT '0'
+  `metatag_id` int(11) NOT NULL DEFAULT '0',
+  KEY `content_id` (`content_id`),
+  KEY `metatag_id` (`metatag_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Reference table between meta tags and content';
 
 -- --------------------------------------------------------
@@ -3642,16 +3653,17 @@ CREATE TABLE `srv37029_ufregru_site_content_metatags` (
 -- Структура таблицы `srv37029_ufregru_site_htmlsnippets`
 --
 
-CREATE TABLE `srv37029_ufregru_site_htmlsnippets` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_htmlsnippets` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT 'Chunk',
   `editor_type` int(11) NOT NULL DEFAULT '0' COMMENT '0-plain text,1-rich text,2-code editor',
   `category` int(11) NOT NULL DEFAULT '0' COMMENT 'category id',
   `cache_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Cache option',
   `snippet` mediumtext,
-  `locked` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains the site chunks.';
+  `locked` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Contains the site chunks.' AUTO_INCREMENT=36 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_site_htmlsnippets`
@@ -3674,13 +3686,13 @@ INSERT INTO `srv37029_ufregru_site_htmlsnippets` (`id`, `name`, `description`, `
 (23, 'map', '', 0, 9, 0, '<embed name="plugin" src="assets/files/map-registralv2.swf" type="application/x-shockwave-flash">\r\n	', 0),
 (26, 'header', '', 0, 9, 0, '<div id="sky">\r\n	\r\n<div class="sky_m">\r\n<ul>\r\n    <li><a href="http://ufreg.ru">Бухгалтерские услуги</a>\r\n    </li>\r\n</ul>\r\n</div>	\r\n	<!--<object data="assets/flash/birds.swf" type="application/x-shockwave-flash">\r\n            <param value="assets/flash/birds.swf" name="movie">\r\n            <param value="transparent" name="wmode">\r\n            <!--[if lt IE 9]>\r\n            <span style="color: #fff; display: block; height: 1px; width: 1px; float: left;">.</span>\r\n            <![endif]-->\r\n           <!-- </object>-->\r\n</div>', 0),
 (14, 'footer', '', 0, 9, 0, '<div id="footer">\r\n	<div>\r\n	<div class="foot_logo">\r\n		<a href="[~1~]"><img src="[!getTV? &parent=`1` &tv=`logo_footer`!]"></a>\r\n		<div id="foot_soc">\r\n			<div>Мы в соц. сетях:  </div>\r\n			<div><a target="_blank" href="[!getTV? &parent=`1` &tv=`vkcom`!]"><img src="[!getTV? &parent=`38` &tv=`soc_sety_vkcom`!]"></a></div>\r\n		</div>\r\n	</div>\r\n\r\n        <div class="foot_cont">\r\n			<div class="foot_cont_w">\r\n			<p>[!Ditto? &parents=`4` &tpl=`column_contact` &display=`2`!]</p>\r\n			<p>[!getTV? &parent=`1` &tv=`adress`!]</p>\r\n			</div>\r\n        </div>        \r\n        <div class="foot_pay">\r\n			<div class="foot_pay_w">\r\n        	<p>Мы принимаем:</p>\r\n            [!Ditto? &parents=`20` &tpl=`column_card` &display=`6`!]\r\n            <a href="[~27~]">Все варианты оплаты</a>\r\n			</div>\r\n        </div>\r\n		</div>\r\n</div>\r\n{{LiveTex}}\r\n{{yandexMetrica}}\r\n{{zadarma}}\r\n\r\n', 0),
-(15, 'form', '', 0, 11, 0, '[!EmailOrPhone!]\r\n[!eForm? &formid=`Send` &tpl=`form_tpl` &to=`xampp@text.com` &report=`report_tpl` &gotoid=`105` &subject=`Заказ  бухгалтерских услуг` &from =`www.ufreg.ru` &fromname=`Бухгалтерских услуг` &eFormOnValidate=`isEmailOrPhone`!]', 0),
-(16, 'form_tpl', '', 0, 11, 0, '<p>[+validationmessage+]</p>\r\n<form id="order" method="post" action="[~[*id*]~]">		 \r\n	<div>\r\n		<input type="hidden" name="formid" value="Send" />\r\n		<label for="author">Ваше имя</label> <input type="text" id="author" name="author" eform="Имя::1" /><br>\r\n		<label for="phone">Ваш телефон</label> <input type="text" id="phone" name="phone"  /><br>\r\n		<label for="email">Email:</label> <input type="text" id="email" name="email" />		\r\n	</div>\r\n	<div>\r\n		<label for="text">Сообщение</label><textarea id="text" name="text" rows="4" cols="35" class="required" eform="Текст сообщения:html:1"></textarea>\r\n		<input type="submit" class="submit_btn" name="submit" id="submit" value=" Отправить " />\r\n	</div> \r\n	<input type="text" name="usluga" value="[!getID!]" style="display:none" />\r\n	[!getID!]\r\n</form>\r\n\r\n', 0),
+(15, 'form', '', 0, 11, 0, '[!EmailOrPhone!]\r\n[!eForm? &formid=`Send` &tpl=`form_tpl` &to=`info@ufreg.com` &report=`report_tpl` &thankyou=`thank_tpl` &subject=`Заказ  бухгалтерских услуг` &from =`www.ufreg.ru` &fromname=`Бухгалтерских услуг` &eFormOnValidate=`isEmailOrPhone`!]\r\n', 0),
+(16, 'form_tpl', '', 0, 11, 0, '<p>[+validationmessage+]</p>\r\n<form id="order" method="post" action="[~[*id*]~]">		 \r\n	<div>\r\n		<input type="hidden" name="formid" value="Send" />\r\n		<label for="author">Ваше имя</label> <input type="text" id="author" name="author" eform="Имя::1" /><br>\r\n		<label for="phone">Ваш телефон</label> <input type="text" id="phone" name="phone"  /><br>\r\n		<label for="email">Email:</label> <input type="text" id="email" name="email" eform="email:email:0" />		\r\n	</div>\r\n	<div>\r\n		<label for="text">Сообщение</label><textarea id="text" name="text" rows="4" cols="35" class="required" eform="Текст сообщения:html:1"></textarea>\r\n		<input type="submit" class="submit_btn" name="submit" id="submit" value=" Отправить " />\r\n	</div> \r\n	<input type="text" name="usluga" value="[!getID!]" style="display:none" />\r\n</form>\r\n\r\n', 0),
 (17, 'head', '', 0, 9, 0, '<head>\r\n<meta http-equiv="Content-Type" content="text/html; charset=[(modx_charset)]" />\r\n<meta name="keywords" content="[*keywords*]" />\r\n<meta name="description" content="[*description*]" />\r\n<base href="[(site_url)]" />\r\n		<link rel="icon" href="assets/templates/registral/favicon.png" type="image/png" />\r\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\r\n<link rel="stylesheet" type="text/css" href="assets/templates/registral/style/style.css" />\r\n<script type="text/javascript" src="assets/templates/registral/script/jquery-1.11.0.min.js"></script>\r\n<script type="text/javascript" src="assets/templates/registral/script/js.js"></script>\r\n<title>[*longtitle*]</title>\r\n<script type="text/javascript" src="baner/swfobject.js"></script>\r\n<script type="text/javascript">\r\n	<!-- Компания Adobe рекомендует разработчиками использовать для определения версии проигрывателя Flash Player объект SWFObject2. -->\r\n		<!-- Дополнительные сведения см. на странице SWFObject по адресу http://code.google.com/p/swfobject. -->\r\n	<!-- Информацию также можно получить в центре разработчиков Adobe Developer Connection в разделе "Определение версии Flash Player и внедрение файлов SWF с SWFObject 2" -->\r\n		<!-- Чтобы отключить проверку версии Flash Player, установите минимальное значение версии (ноль) -->\r\n			var swfVersionStr = "11.2.0";\r\n	<!-- xiSwfUrlStr может использоваться для определения экспресс-установщика SWF. -->\r\n		var xiSwfUrlStr = "";\r\n	var flashvars = {};\r\n	var params = {};\r\n	params.quality = "high";\r\n	params.bgcolor = "#f4f9ff";\r\n	params.play = "true";\r\n	params.loop = "true";\r\n	params.wmode = "opaque";\r\n	params.scale = "showall";\r\n	params.menu = "true";\r\n	params.devicefont = "false";\r\n	params.salign = "";\r\n	params.allowscriptaccess = "sameDomain";\r\n	var attributes = {};\r\n	attributes.id = "baner";\r\n	attributes.name = "baner";\r\n	attributes.align = "middle";\r\n	swfobject.embedSWF(\r\n		"baner/baner.swf", "baner",\r\n		"680", "109",\r\n		swfVersionStr, xiSwfUrlStr,\r\n		flashvars, params, attributes);\r\n</script>\r\n</head>', 0),
 (18, 'header_old', '', 0, 9, 0, '<div id="header">\r\n	<div>\r\n    	<div>\r\n        	<a href="[~1~]"><img src="[!getTV? &parent=`1` &tv=`logo_head`!]" alt="logo" ></a>\r\n            <div>\r\n               [!Ditto? &parents=`5` &tpl=`column_tpl` &orderBy=`id ASC`!]                \r\n            </div>\r\n            <img src="[!getTV? &parent=`38` &tv=`array_to_left`!]" alt="left">\r\n            <img src="[!getTV? &parent=`38` &tv=`array_to_right`!]" alt="right">\r\n        </div>\r\n    </div>	\r\n</div>', 0),
 (19, 'logo_slaid', '', 0, 9, 0, '<div id="carusel">\r\n	<span class="prev"></span>\r\n	<ul>\r\n		[!Ditto? &parents=`14` &tpl=`column_img`!]     \r\n	</ul>\r\n	<span class="next"></span>\r\n</div>', 0),
 (20, 'rekl', '', 0, 9, 0, '<div id="rekl">\r\n	<div>\r\n		[!Ditto? &parents=`10` &tpl=`column_rekl`&display=`3` &orderBy=`id ASC`!]\r\n		<section class="articles">\r\n			<h1 class="title_list_info">Полезная информация</h1>\r\n			[!Ditto? &startID=`79` &tpl=`news_idx_tpl` &paginate=`1` &dateFormat=`%H:%M - %d.%m.%Y` &display=`3` &orderBy=`pub_date DESC` !]\r\n		</section>\r\n		<div class="sl"></div>\r\n		{{logo_slaid}}\r\n    </div>    \r\n</div>', 0),
-(21, 'report_tpl', '', 0, 11, 0, '<p>Это сообщение было отправлено посетителем по имени [+author+] с помощью формы обратной связи. </p>\r\n<table>\r\n<tr valign="top"><td><b>Имя:</b></td><td>[+usluga+]</td></tr>\r\n<tr valign="top"><td><b>Имя:</b></td><td>[+author+]</td></tr>\r\n<tr valign="top"><td><b>Телефон:</b></td><td>[+phone+]</td></tr>\r\n<tr valign="top"><td><b>Email:</b>:</td><td>[+email+]</td></tr>\r\n<tr valign="top"><td><b>Сообщение:</b></td><td>[+text+]</td></tr>\r\n	<tr valign="top"><td><b>Сообщение со страницы:</b></td><td>[+usluga+]</td></tr>	\r\n</table>\r\n\r\n<p>Вы можете использовать эту ссылку для ответа: <a href="mailto:[+email+]?subject=RE:[+subject+]">[+email+]</a></p>', 0),
+(21, 'report_tpl', '', 0, 11, 0, '<p>Это сообщение было отправлено посетителем по имени [+author+] с помощью формы обратной связи. </p>\r\n<table>\r\n<tr valign="top"><td><b>Заказ услуги:</b></td><td>[+usluga+]</td></tr>\r\n<tr valign="top"><td><b>Имя:</b></td><td>[+author+]</td></tr>\r\n<tr valign="top"><td><b>Телефон:</b></td><td>[+phone+]</td></tr>\r\n<tr valign="top"><td><b>Email:</b>:</td><td>[+email+]</td></tr>\r\n<tr valign="top"><td><b>Сообщение:</b></td><td>[+text+]</td></tr>\r\n</table>\r\n\r\n<p>Вы можете использовать эту ссылку для ответа: <a href="mailto:[+email+]?subject=RE:[+subject+]">[+email+]</a></p>', 0),
 (22, 'thank_tpl', '', 0, 11, 0, '<strong>Спасибо, что воспользовались формой обратной связи на нашем сайте.</strong>\r\n<p>Ваше сообщение будет рассмотрено в кротчайшие сроки, и, если оно требует ответа, Вы обязательно его получите.</p>\r\n<p>Отправленная информация:</p>\r\n<ul>\r\n<li><b>Ваше имя:</b> [+author+]</li>\r\n<li><b>Ваш телефон:</b> [+phone+]</li>\r\n<li><b>Ваш e-mail:</b> [+email+]</li>\r\n<li><b>Текст сообщения:</b> [+text+]</li>\r\n</ul>', 0),
 (24, 'table', '', 0, 9, 0, '[!getTable? &parent=`[*id*]` &wont_table=`[*wont_table*]`!]', 0),
 (25, 'map1', '', 0, 9, 0, '<div class="map">\r\n	<iframe width="962" scrolling="no" height="340" frameborder="0" src="https://maps.google.com/maps/ms?hl=ru&amp;ie=UTF8&amp;oe=UTF8&amp;msa=0&amp;msid=213055875448570551925.0004e0957e6ad7c2a8c98&amp;t=m&amp;ll=55.740823,37.653944&amp;spn=0.002114,0.00456&amp;z=17&amp;iwloc=0004e09580b6b68d8038c&amp;output=embed" marginwidth="0" marginheight="0"></iframe></div>\r\n	<a target="_blank" href="https://maps.google.com/maps/ms?hl=ru&amp;ie=UTF8&amp;oe=UTF8&amp;msa=0&amp;msid=213055875448570551925.0004e0957e6ad7c2a8c98&amp;t=m&amp;ll=55.740823,37.653944&amp;spn=0.002114,0.00456&amp;z=17&amp;iwloc=0004e09580b6b68d8038c&amp;source=embed" rel="nofollow" class="zoom"><span>Просмотреть увеличенную карту</span></a>', 0),
@@ -3700,10 +3712,12 @@ INSERT INTO `srv37029_ufregru_site_htmlsnippets` (`id`, `name`, `description`, `
 -- Структура таблицы `srv37029_ufregru_site_keywords`
 --
 
-CREATE TABLE `srv37029_ufregru_site_keywords` (
-  `id` int(11) NOT NULL,
-  `keyword` varchar(40) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Site keyword list';
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_keywords` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `keyword` varchar(40) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `keyword` (`keyword`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Site keyword list' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3711,13 +3725,14 @@ CREATE TABLE `srv37029_ufregru_site_keywords` (
 -- Структура таблицы `srv37029_ufregru_site_metatags`
 --
 
-CREATE TABLE `srv37029_ufregru_site_metatags` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_metatags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `tag` varchar(50) NOT NULL DEFAULT '' COMMENT 'tag name',
   `tagvalue` varchar(255) NOT NULL DEFAULT '',
-  `http_equiv` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1 - use http_equiv tag style, 0 - use name'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Site meta tags';
+  `http_equiv` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1 - use http_equiv tag style, 0 - use name',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Site meta tags' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3725,8 +3740,8 @@ CREATE TABLE `srv37029_ufregru_site_metatags` (
 -- Структура таблицы `srv37029_ufregru_site_modules`
 --
 
-CREATE TABLE `srv37029_ufregru_site_modules` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT '0',
   `editor_type` int(11) NOT NULL DEFAULT '0' COMMENT '0-plain text,1-rich text,2-code editor',
@@ -3742,8 +3757,9 @@ CREATE TABLE `srv37029_ufregru_site_modules` (
   `guid` varchar(32) NOT NULL DEFAULT '' COMMENT 'globally unique identifier',
   `enable_sharedparams` tinyint(4) NOT NULL DEFAULT '0',
   `properties` text,
-  `modulecode` mediumtext COMMENT 'module boot up code'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Site Modules';
+  `modulecode` mediumtext COMMENT 'module boot up code',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Site Modules' AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_site_modules`
@@ -3759,11 +3775,12 @@ INSERT INTO `srv37029_ufregru_site_modules` (`id`, `name`, `description`, `edito
 -- Структура таблицы `srv37029_ufregru_site_module_access`
 --
 
-CREATE TABLE `srv37029_ufregru_site_module_access` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_module_access` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `module` int(11) NOT NULL DEFAULT '0',
-  `usergroup` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Module users group access permission';
+  `usergroup` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Module users group access permission' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3771,12 +3788,13 @@ CREATE TABLE `srv37029_ufregru_site_module_access` (
 -- Структура таблицы `srv37029_ufregru_site_module_depobj`
 --
 
-CREATE TABLE `srv37029_ufregru_site_module_depobj` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_module_depobj` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `module` int(11) NOT NULL DEFAULT '0',
   `resource` int(11) NOT NULL DEFAULT '0',
-  `type` int(2) NOT NULL DEFAULT '0' COMMENT '10-chunks, 20-docs, 30-plugins, 40-snips, 50-tpls, 60-tvs'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Module Dependencies';
+  `type` int(2) NOT NULL DEFAULT '0' COMMENT '10-chunks, 20-docs, 30-plugins, 40-snips, 50-tpls, 60-tvs',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Module Dependencies' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3784,8 +3802,8 @@ CREATE TABLE `srv37029_ufregru_site_module_depobj` (
 -- Структура таблицы `srv37029_ufregru_site_plugins`
 --
 
-CREATE TABLE `srv37029_ufregru_site_plugins` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_plugins` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT 'Plugin',
   `editor_type` int(11) NOT NULL DEFAULT '0' COMMENT '0-plain text,1-rich text,2-code editor',
@@ -3795,8 +3813,9 @@ CREATE TABLE `srv37029_ufregru_site_plugins` (
   `locked` tinyint(4) NOT NULL DEFAULT '0',
   `properties` text COMMENT 'Default Properties',
   `disabled` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'Disables the plugin',
-  `moduleguid` varchar(32) NOT NULL DEFAULT '' COMMENT 'GUID of module from which to import shared parameters'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains the site plugins.';
+  `moduleguid` varchar(32) NOT NULL DEFAULT '' COMMENT 'GUID of module from which to import shared parameters',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Contains the site plugins.' AUTO_INCREMENT=9 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_site_plugins`
@@ -3818,10 +3837,11 @@ INSERT INTO `srv37029_ufregru_site_plugins` (`id`, `name`, `description`, `edito
 -- Структура таблицы `srv37029_ufregru_site_plugin_events`
 --
 
-CREATE TABLE `srv37029_ufregru_site_plugin_events` (
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_plugin_events` (
   `pluginid` int(10) NOT NULL,
   `evtid` int(10) NOT NULL DEFAULT '0',
-  `priority` int(10) NOT NULL DEFAULT '0' COMMENT 'determines plugin run order'
+  `priority` int(10) NOT NULL DEFAULT '0' COMMENT 'determines plugin run order',
+  PRIMARY KEY (`pluginid`,`evtid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Links to system events';
 
 --
@@ -3864,8 +3884,8 @@ INSERT INTO `srv37029_ufregru_site_plugin_events` (`pluginid`, `evtid`, `priorit
 -- Структура таблицы `srv37029_ufregru_site_snippets`
 --
 
-CREATE TABLE `srv37029_ufregru_site_snippets` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_snippets` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT 'Snippet',
   `editor_type` int(11) NOT NULL DEFAULT '0' COMMENT '0-plain text,1-rich text,2-code editor',
@@ -3874,8 +3894,9 @@ CREATE TABLE `srv37029_ufregru_site_snippets` (
   `snippet` mediumtext,
   `locked` tinyint(4) NOT NULL DEFAULT '0',
   `properties` text COMMENT 'Default Properties',
-  `moduleguid` varchar(32) NOT NULL DEFAULT '' COMMENT 'GUID of module from which to import shared parameters'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains the site snippets.';
+  `moduleguid` varchar(32) NOT NULL DEFAULT '' COMMENT 'GUID of module from which to import shared parameters',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Contains the site snippets.' AUTO_INCREMENT=26 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_site_snippets`
@@ -3900,13 +3921,13 @@ INSERT INTO `srv37029_ufregru_site_snippets` (`id`, `name`, `description`, `edit
 (16, 'WebChangePwd', '<strong>1.0</strong> Allows Web User to change their password from the front-end of the website', 0, 2, 0, '# Created By Raymond Irving April, 2005\n#::::::::::::::::::::::::::::::::::::::::\n# Params:	\n#\n#	&tpl			- (Optional)\n#		Chunk name or document id to use as a template\n#				  \n#	Note: Templats design:\n#			section 1: change pwd template\n#			section 2: notification template \n#\n# Examples:\n#\n#	[[WebChangePwd? &tpl=`ChangePwd`]] \n\n# Set Snippet Paths \n$snipPath  = (($modx->insideManager())? "../":"");\n$snipPath .= "assets/snippets/";\n\n# check if inside manager\nif ($m = $modx->insideManager()) {\n	return ''''; # don''t go any further when inside manager\n}\n\n\n# Snippet customize settings\n$tpl		= isset($tpl)? $tpl:"";\n\n# System settings\n$isPostBack		= count($_POST) && isset($_POST[''cmdwebchngpwd'']);\n\n# Start processing\ninclude_once $snipPath."weblogin/weblogin.common.inc.php";\ninclude_once $snipPath."weblogin/webchangepwd.inc.php";\n\n# Return\nreturn $output;\n\n\n\n', 0, '', ''),
 (17, 'UltimateParent', '<strong>2.0</strong> Travels up the document tree from a specified document and returns its "ultimate" non-root parent', 0, 6, 0, 'return require MODX_BASE_PATH.''assets/snippets/ultimateparent/snippet.ultimateparent.php'';', 0, '', ''),
 (18, 'getTV', '', 0, 9, 0, '\r\nif(!isset($parent) || !isset($tv))return ''памылка'';\r\n\r\n$elements = $modx->getAllChildren($parent);\r\n$el='''';\r\nforeach ($elements as $item){	\r\n	$el = $modx->getTemplateVarOutput(true, $item[''id'']);	\r\n	if($el[$tv]!='''') return $el[$tv];		\r\n	}	\r\n	return;\r\n', 0, '', ' '),
-(19, 'items', '', 0, 9, 0, '\r\n$res = $modx->db->query(''select page_id,name,content,price from srv37029_ufregru_items'');\r\n$row = mysql_fetch_assoc($res);\r\n$first = 0;\r\nif(empty($row))return;\r\ndo{	\r\n	echo ''<div class="buklet_wrap">'';	\r\n	echo ''<div class="buklet">'';	\r\n	echo ''<a href="[~3~]">Заказать</a>'';\r\n	/*switch($first){\r\n		case 0: \r\n			echo ''<p><a href="[~30~]">''.$row[''name''].''</a></p>'';\r\n			break;\r\n		case 1: \r\n			echo ''<p><a href="[~29~]">''.$row[''name''].''</a></p>'';\r\n			break;\r\n		case 2: \r\n			echo ''<p><a href="[~28~]">''.$row[''name''].''</a></p>'';\r\n			break;\r\n		case 3: \r\n			echo ''<p><a href="">''.$row[''name''].''</a></p>'';\r\n			break;\r\n	}	*/\r\n	if($row[''page_id'']!=0)	\r\n		echo ''<p><a href="[~''.$row[''page_id''].''~]">''.$row[''name''].''</a></p>'';\r\n	else \r\n		echo ''<p><a href="">''.$row[''name''].''</a></p>'';\r\n	echo ''<p>''.$row[''content''].''</p>'';\r\n	//echo ''<p>Заказ информационной выписки в электронной базе НФС РоссииПредоставление заказчику полученной он-лайн выписки по электронной почте</p>'';	\r\n	echo ''<p class="price_item">''.$row[''price''].'' </p>'';\r\n	echo ''</div>'';\r\n	echo ''</div>'';\r\n	$first++;\r\n\r\n}while($row = mysql_fetch_assoc($res));\r\n', 0, '', ' '),
+(19, 'items', '', 0, 9, 0, '\r\n$res = $modx->db->query(''select page_id,name,content,price from srv37029_ufregru_items'');\r\n$row = mysql_fetch_assoc($res);\r\n$first = 0;\r\nif(empty($row))return;\r\ndo{	\r\n	echo ''<div class="buklet_wrap">'';	\r\n	echo ''<div class="buklet">'';	\r\n	//echo ''<a href="[~3~]">Заказать</a>'';\r\n	/*switch($first){\r\n		case 0:\r\n			echo ''<p><a href="[~30~]">''.$row[''name''].''</a></p>'';\r\n			break;\r\n		case 1:\r\n			echo ''<a href="[~3~]">Заказать</a>'';\r\n			echo ''<p><a href="[~29~]">''.$row[''name''].''</a></p>'';\r\n			break;\r\n		case 2:\r\n			echo ''<a href="[~3~]">Заказать</a>'';\r\n			echo ''<p><a href="[~28~]">''.$row[''name''].''</a></p>'';\r\n			break;\r\n		case 3: \r\n			echo ''<p><a href="">''.$row[''name''].''</a></p>'';\r\n			break;\r\n	}	*/\r\n	if($row[''page_id'']!=0)	\r\n		echo ''<a href="[~3~]?id=''.$row[''page_id''].''">Заказать</a><p><a href="[~''.$row[''page_id''].''~]">''.$row[''name''].''</a></p>'';\r\n	else \r\n		echo ''<p><a href="">''.$row[''name''].''</a></p>'';\r\n	echo ''<p>''.$row[''content''].''</p>'';\r\n	//echo ''<p>Заказ информационной выписки в электронной базе НФС РоссииПредоставление заказчику полученной он-лайн выписки по электронной почте</p>'';	\r\n	echo ''<p class="price_item">''.$row[''price''].'' </p>'';\r\n	echo ''</div>'';\r\n	echo ''</div>'';\r\n	$first++;\r\n\r\n}while($row = mysql_fetch_assoc($res));\r\n', 0, '', ' '),
 (20, 'short_phone', '', 0, 9, 0, '\r\nif(!isset($parent))return ''памылка'';\r\n$elements = $modx->getAllChildren($parent);\r\n$txt='''';\r\n$count=0;\r\nforeach ($elements as $item){\r\n	$count++;\r\n	if($count>2)break;\r\n	$el = $modx->getTemplateVarOutput(true, $item[''id'']);\r\n	$str = trim($el[''contact'']);\r\n	list(,$str) = explode(''('', $str);\r\n	if($count>1)\r\n		$txt .= ''(''.$str.'' '';	\r\n	else \r\n		$txt .= ''(''.$str.'', '';	\r\n}\r\nreturn $txt;\r\n', 0, '', ' '),
 (21, 'delete_item', '', 0, 9, 0, '\r\nif(!isset($id))return ''памылка'';\r\n$res = $modx->db->query(''delete from users where id=''.$id);\r\nif(!$res) echo ''error'';\r\nelse ''complete'';\r\n', 0, '', ' '),
-(22, 'getTable', 'Вставляем таблицу если необходимо', 0, 9, 0, '\r\nif(!isset($parent))return ''памылка'';\r\n	if(isset($wont_table) && !empty($wont_table)){\r\n	echo ''<table class="price"  cellspacing="0" cellpadding="0">\r\n				<tr>\r\n					<th>Вид услуги</th> \r\n					<th>Описание</th> \r\n					<th>Стоимость</th> \r\n					<th>&nbsp;</th>\r\n				</tr> '';\r\n$elements = $modx->getActiveChildren($parent);\r\n$el='''';\r\n$last = false;	\r\nforeach ($elements as $item){		\r\n	$el = $modx->getTemplateVarOutput(array(''colspan'', ''price'',''view_vichet'',''link'',''content'',''pick_out'',''addButton''), $item[''id'']);		$str = "";		\r\n	if($el[''colspan''] == 1)\r\n		$str = ''<tr><td colspan="2">'';\r\n	else \r\n		$str = ''<tr><td>'';\r\n	\r\n	\r\n	if(!empty($el[''link'']))	\r\n			if(is_numeric($el[''link'']))\r\n				$str .= ''<a href="[~''.$el[''link''].''~]">''.$el[''view_vichet''].''</a></td>'';	\r\n			else\r\n				$str .= ''<a href="''.$el[''link''].''" target="_blank">''.$el[''view_vichet''].''</a></td>'';	\r\n		else $str .= ''<span>''.$el[''view_vichet''].''</span></td>'';\r\n	\r\n	if($el[''pick_out''] == 1) \r\n		$str = substr_replace($str, '' class="last"'', 3, 0);\r\n	\r\n	if($el[''colspan''] == 1)\r\n		$str .= ''<td class="money">''.$el[''price''].''</td><td class="zakaz"></td></tr>'';\r\n	else \r\n		$str .= ''<td class="content">''.$el[''content''].''</td><td class="money">''.$el[''price''].''</td><td class="zakaz"></td></tr>'';\r\n	\r\n	if($el[''addButton''] == 1) \r\n		$str = substr_replace($str, ''<a href="[~3~]?id=''.$el[''link''].''">Заказать</a>'', strlen($str)-10, 0);		\r\n	echo $str;\r\n	}			\r\n	echo ''</table>'';		\r\n}\r\n	else ;\r\nreturn;\r\n', 0, '', ' '),
+(22, 'getTable', 'Вставляем таблицу если необходимо', 0, 9, 0, '\r\nif(!isset($parent))return ''памылка'';\r\n	if(isset($wont_table) && !empty($wont_table)){\r\n	echo ''<table class="price"  cellspacing="0" cellpadding="0">\r\n				<tr>\r\n					<th>Вид услуги</th> \r\n					<th>Описание</th> \r\n					<th>Стоимость</th> \r\n					<th>&nbsp;</th>\r\n				</tr> '';\r\n$elements = $modx->getActiveChildren($parent);\r\n$el='''';\r\n$last = false;	\r\nforeach ($elements as $item){		\r\n	$el = $modx->getTemplateVarOutput(array(''colspan'', ''price'',''view_vichet'',''link'',''content'',''pick_out'',''addButton''), $item[''id'']);\r\n	$str = "";\r\n	$usl = "";\r\n	if($el[''colspan''] == 1)\r\n		$str = ''<tr><td colspan="2">'';\r\n	else \r\n		$str = ''<tr><td>'';\r\n	\r\n	\r\n	if(!empty($el[''link'']))	\r\n			if(is_numeric($el[''link'']))\r\n				$str .= ''<a href="[~''.$el[''link''].''~]">''.$el[''view_vichet''].''</a></td>'';	\r\n			else\r\n				$str .= ''<a href="''.$el[''link''].''" target="_blank">''.$el[''view_vichet''].''</a></td>'';	\r\n		else $str .= ''<span>''.$el[''view_vichet''].''</span></td>'';\r\n	\r\n	if($el[''pick_out''] == 1) \r\n		$str = substr_replace($str, '' class="last"'', 3, 0);\r\n	\r\n	if($el[''colspan''] == 1)\r\n		$str .= ''<td class="money">''.$el[''price''].''</td><td class="zakaz"></td></tr>'';\r\n	else \r\n		$str .= ''<td class="content">''.$el[''content''].''</td><td class="money">''.$el[''price''].''</td><td class="zakaz"></td></tr>'';\r\n	\r\n		//добавляем к кнопке определение услуги\r\n	if(!empty($el[''link'']))	\r\n			if(is_numeric($el[''link'']))\r\n				$usl = $el[''link''];	\r\n			else\r\n				$usl = $el[''view_vichet''];	\r\n		else $usl = $el[''view_vichet''];	\r\n				\r\n		//конец определения услуги\r\n		\r\n	if($el[''addButton''] == 1) \r\n		$str = substr_replace($str, ''<a href="[~3~]?id=''.$usl.''">Заказать</a>'', strlen($str)-10, 0);		\r\n	echo $str;\r\n	}			\r\n	echo ''</table>'';\r\n	\r\n}\r\n	else ;\r\n\r\nreturn;\r\n', 0, '', ' '),
 (23, 'SubStr', 'Обрезает текст до нужно величины', 0, 9, 0, '\r\nmb_internal_encoding("UTF-8");\r\n$size= isset($size)? $size:"200";\r\n$docid = (isset($docid)) ? $docid : $modx->documentIdentifier;\r\n$field = isset($field)? $field:"content";\r\n\r\n$docFields = $modx->getDocument($docid);\r\n\r\n$text = $docFields[$field];\r\n$text = strip_tags($text);\r\n$text = mb_substr($text,0,$size);\r\n\r\n$text = explode(" ",$text);\r\narray_pop($text);\r\n$text = implode(" ",$text);\r\nreturn $text.''<span>...</span>'';\r\n', 0, '', ' '),
 (24, 'EmailOrPhone', 'Одно из двух полей', 0, 0, 0, '\r\nfunction isEmailOrPhone(&$fields, &$vMsg, &$rMsg){\r\n  if (trim($fields[''phone'']) == '''' && trim($fields[''email'']) == '''') {\r\n    $vMsg[] = ''Введите или телефон или email!'';\r\n    return true;\r\n  } else {\r\n    return true;\r\n  }\r\n}\r\n', 0, '', ' '),
-(25, 'getID', 'выводит услугу для заказа', 0, 0, 0, '\r\n$id=($_GET[''id'']);\r\n\r\n\r\n$pid = $id;\r\n$huy = $modx->getDocument($pid,''pagetitle, longtitle, id, description, menutitle'');\r\n \r\n//параметры\r\n$tol = (!isset($tol)) ? $huy[''pagetitle''] : "$tol";\r\n$title = (!isset($title)) ? $huy[''longtitle''] : "$title";\r\n$target = (!isset($target)) ? "" : "target=\\"_$target\\"";\r\n$link = (!isset($link)) ? "" : "link=\\"$link\\"";\r\n$class = (!isset($class)) ? "" : "class=\\"$class\\"";\r\n \r\n$output .= $tol;\r\n \r\nreturn $output;\r\n', 0, '', ' ');
+(25, 'getID', 'выводит услугу для заказа', 0, 0, 0, '\r\n	$pattern = "/^[а-яё 0-9]++$/ui";\r\n$id=($_GET[''id'']);\r\n$id = (preg_match($pattern, $id))?$id:"";\r\n$pid = $id;\r\n$huy = $modx->getDocument($pid,''pagetitle, longtitle, id, description, menutitle'');\r\n \r\n//параметры\r\n$tol = (is_numeric($id)) ? $huy[''pagetitle''] : $id;\r\n$title = (!isset($title)) ? $huy[''longtitle''] : "$title";\r\n$target = (!isset($target)) ? "" : "target=\\"_$target\\"";\r\n$link = (!isset($link)) ? "" : "link=\\"$link\\"";\r\n$class = (!isset($class)) ? "" : "class=\\"$class\\"";\r\n$output .= $tol;\r\nreturn $output;\r\n', 0, '', ' ');
 
 -- --------------------------------------------------------
 
@@ -3914,8 +3935,8 @@ INSERT INTO `srv37029_ufregru_site_snippets` (`id`, `name`, `description`, `edit
 -- Структура таблицы `srv37029_ufregru_site_templates`
 --
 
-CREATE TABLE `srv37029_ufregru_site_templates` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_templates` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `templatename` varchar(50) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT 'Template',
   `editor_type` int(11) NOT NULL DEFAULT '0' COMMENT '0-plain text,1-rich text,2-code editor',
@@ -3923,8 +3944,9 @@ CREATE TABLE `srv37029_ufregru_site_templates` (
   `icon` varchar(255) NOT NULL DEFAULT '' COMMENT 'url to icon file',
   `template_type` int(11) NOT NULL DEFAULT '0' COMMENT '0-page,1-content',
   `content` mediumtext,
-  `locked` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains the site templates.';
+  `locked` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Contains the site templates.' AUTO_INCREMENT=22 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_site_templates`
@@ -3943,7 +3965,7 @@ INSERT INTO `srv37029_ufregru_site_templates` (`id`, `templatename`, `descriptio
 (12, 'Картинки страниц', '', 0, 9, '', 0, '', 0),
 (13, 'Тексты страницы', '', 0, 9, '', 0, '', 0),
 (14, 'Таблицы', '', 0, 9, '', 0, '', 0),
-(15, 'Стоимость', '', 0, 9, '', 0, '<!DOCTYPE html>\r\n<html>\r\n	{{head}}\r\n<body>\r\n	{{contacts}}\r\n	{{header}}\r\n	<!--<div class="baner">\r\n		{{baner}}\r\n	</div>-->\r\n	<div class="ins">\r\n		<div>\r\n			<div class="payment">  \r\n			[*content*]	\r\n			{{table}}\r\n			</div>\r\n			{{logo_slaid}}\r\n		</div>\r\n	</div>\r\n	{{footer}}\r\n</body>\r\n</html>\r\n', 0),
+(15, 'Стоимость', '', 0, 9, '', 0, '<!DOCTYPE html>\r\n<html>\r\n	{{head}}\r\n<body>\r\n	{{contacts}}\r\n	{{header}}\r\n	<!--<div class="baner">\r\n		{{baner}}\r\n	</div>-->\r\n	<div class="ins">\r\n		<div>\r\n			<div class="payment">  \r\n			[*content*]	\r\n			{{table}}\r\n				[!getTable!]\r\n			</div>\r\n			{{logo_slaid}}\r\n		</div>\r\n	</div>\r\n	{{footer}}\r\n</body>\r\n</html>\r\n', 0),
 (17, 'Внутренняя', '', 0, 9, '', 0, '<!DOCTYPE html>\r\n<html>\r\n	{{head}}\r\n<body>\r\n	{{contacts}}\r\n	{{header}}\r\n	<!--<div class="baner">\r\n		{{baner}}\r\n	</div>-->\r\n	<div class="ins">\r\n		<div>\r\n			<div class="payment">  \r\n			[*content*]			\r\n			</div>\r\n			{{logo_slaid}}\r\n		</div>\r\n	</div>\r\n	{{footer}}\r\n</body>\r\n</html>\r\n', 0),
 (16, 'Заказать', '', 0, 9, '', 0, '<!DOCTYPE html>\r\n<html>\r\n	{{head}}\r\n<body>\r\n	{{contacts}}\r\n	{{header}}\r\n	<!--<div class="baner">\r\n		{{baner}}\r\n	</div>-->\r\n	<div class="ins">\r\n		<div>\r\n			<div class="payment">  \r\n			[*content*]\r\n				\r\n			{{form}}							\r\n			</div>\r\n			{{logo_slaid}}\r\n		</div>\r\n	</div>\r\n	{{footer}}\r\n</body>\r\n</html>\r\n', 0),
 (18, 'Слайды', '', 0, 9, '', 0, '', 0),
@@ -3957,8 +3979,8 @@ INSERT INTO `srv37029_ufregru_site_templates` (`id`, `templatename`, `descriptio
 -- Структура таблицы `srv37029_ufregru_site_tmplvars`
 --
 
-CREATE TABLE `srv37029_ufregru_site_tmplvars` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_tmplvars` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(20) NOT NULL DEFAULT '',
   `name` varchar(50) NOT NULL DEFAULT '',
   `caption` varchar(80) NOT NULL DEFAULT '',
@@ -3970,8 +3992,10 @@ CREATE TABLE `srv37029_ufregru_site_tmplvars` (
   `rank` int(11) NOT NULL DEFAULT '0',
   `display` varchar(20) NOT NULL DEFAULT '' COMMENT 'Display Control',
   `display_params` text COMMENT 'Display Control Properties',
-  `default_text` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Site Template Variables';
+  `default_text` text,
+  PRIMARY KEY (`id`),
+  KEY `indx_rank` (`rank`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Site Template Variables' AUTO_INCREMENT=27 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_site_tmplvars`
@@ -4010,11 +4034,12 @@ INSERT INTO `srv37029_ufregru_site_tmplvars` (`id`, `type`, `name`, `caption`, `
 -- Структура таблицы `srv37029_ufregru_site_tmplvar_access`
 --
 
-CREATE TABLE `srv37029_ufregru_site_tmplvar_access` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_tmplvar_access` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `tmplvarid` int(10) NOT NULL DEFAULT '0',
-  `documentgroup` int(10) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for template variable access permissions.';
+  `documentgroup` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for template variable access permissions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -4022,12 +4047,16 @@ CREATE TABLE `srv37029_ufregru_site_tmplvar_access` (
 -- Структура таблицы `srv37029_ufregru_site_tmplvar_contentvalues`
 --
 
-CREATE TABLE `srv37029_ufregru_site_tmplvar_contentvalues` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_tmplvar_contentvalues` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `tmplvarid` int(10) NOT NULL DEFAULT '0' COMMENT 'Template Variable id',
   `contentid` int(10) NOT NULL DEFAULT '0' COMMENT 'Site Content Id',
-  `value` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Site Template Variables Content Values Link Table';
+  `value` text,
+  PRIMARY KEY (`id`),
+  KEY `idx_tmplvarid` (`tmplvarid`),
+  KEY `idx_id` (`contentid`),
+  FULLTEXT KEY `value_ft_idx` (`value`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Site Template Variables Content Values Link Table' AUTO_INCREMENT=162 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_site_tmplvar_contentvalues`
@@ -4146,7 +4175,10 @@ INSERT INTO `srv37029_ufregru_site_tmplvar_contentvalues` (`id`, `tmplvarid`, `c
 (147, 9, 77, '2500 рублей'),
 (148, 26, 77, 'Регистрация обособленного\r\nподразделения'),
 (152, 21, 78, '1'),
-(156, 22, 97, '1');
+(156, 22, 97, '1'),
+(159, 20, 69, '47'),
+(160, 21, 70, '1'),
+(161, 20, 78, '72');
 
 -- --------------------------------------------------------
 
@@ -4154,10 +4186,11 @@ INSERT INTO `srv37029_ufregru_site_tmplvar_contentvalues` (`id`, `tmplvarid`, `c
 -- Структура таблицы `srv37029_ufregru_site_tmplvar_templates`
 --
 
-CREATE TABLE `srv37029_ufregru_site_tmplvar_templates` (
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_site_tmplvar_templates` (
   `tmplvarid` int(10) NOT NULL DEFAULT '0' COMMENT 'Template Variable id',
   `templateid` int(11) NOT NULL DEFAULT '0',
-  `rank` int(11) NOT NULL DEFAULT '0'
+  `rank` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`tmplvarid`,`templateid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Site Template Variables Templates Link Table';
 
 --
@@ -4202,12 +4235,13 @@ INSERT INTO `srv37029_ufregru_site_tmplvar_templates` (`tmplvarid`, `templateid`
 -- Структура таблицы `srv37029_ufregru_system_eventnames`
 --
 
-CREATE TABLE `srv37029_ufregru_system_eventnames` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_system_eventnames` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `service` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'System Service number',
-  `groupname` varchar(20) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='System Event Names.';
+  `groupname` varchar(20) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='System Event Names.' AUTO_INCREMENT=1001 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_system_eventnames`
@@ -4338,9 +4372,10 @@ INSERT INTO `srv37029_ufregru_system_eventnames` (`id`, `name`, `service`, `grou
 -- Структура таблицы `srv37029_ufregru_system_settings`
 --
 
-CREATE TABLE `srv37029_ufregru_system_settings` (
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_system_settings` (
   `setting_name` varchar(50) NOT NULL DEFAULT '',
-  `setting_value` text
+  `setting_value` text,
+  PRIMARY KEY (`setting_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains Content Manager settings.';
 
 --
@@ -4488,8 +4523,8 @@ INSERT INTO `srv37029_ufregru_system_settings` (`setting_name`, `setting_value`)
 -- Структура таблицы `srv37029_ufregru_user_attributes`
 --
 
-CREATE TABLE `srv37029_ufregru_user_attributes` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_user_attributes` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `internalKey` int(10) NOT NULL DEFAULT '0',
   `fullname` varchar(100) NOT NULL DEFAULT '',
   `role` int(10) NOT NULL DEFAULT '0',
@@ -4513,15 +4548,17 @@ CREATE TABLE `srv37029_ufregru_user_attributes` (
   `zip` varchar(25) NOT NULL DEFAULT '',
   `fax` varchar(100) NOT NULL DEFAULT '',
   `photo` varchar(255) NOT NULL DEFAULT '' COMMENT 'link to photo',
-  `comment` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains information about the backend users.';
+  `comment` text,
+  PRIMARY KEY (`id`),
+  KEY `userid` (`internalKey`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Contains information about the backend users.' AUTO_INCREMENT=2 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_user_attributes`
 --
 
 INSERT INTO `srv37029_ufregru_user_attributes` (`id`, `internalKey`, `fullname`, `role`, `email`, `phone`, `mobilephone`, `blocked`, `blockeduntil`, `blockedafter`, `logincount`, `lastlogin`, `thislogin`, `failedlogincount`, `sessionid`, `dob`, `gender`, `country`, `street`, `city`, `state`, `zip`, `fax`, `photo`, `comment`) VALUES
-(1, 1, 'admin account', 1, 'info@ufreg.com', '', '', 0, 1492417016, 0, 143, 1499195995, 1499779729, 0, 'iveufvkdduai1u9a6mr10nmlj2', 0, 2, '', '', '', '', '', '', '', '');
+(1, 1, 'admin account', 1, 'info@ufreg.com', '', '', 0, 1492417016, 0, 144, 1499779729, 1499942095, 0, '2p3u4uc3vbggkji6naqshf6ta3', 0, 2, '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -4529,8 +4566,8 @@ INSERT INTO `srv37029_ufregru_user_attributes` (`id`, `internalKey`, `fullname`,
 -- Структура таблицы `srv37029_ufregru_user_messages`
 --
 
-CREATE TABLE `srv37029_ufregru_user_messages` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_user_messages` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `type` varchar(15) NOT NULL DEFAULT '',
   `subject` varchar(60) NOT NULL DEFAULT '',
   `message` text,
@@ -4538,8 +4575,9 @@ CREATE TABLE `srv37029_ufregru_user_messages` (
   `recipient` int(10) NOT NULL DEFAULT '0',
   `private` tinyint(4) NOT NULL DEFAULT '0',
   `postdate` int(20) NOT NULL DEFAULT '0',
-  `messageread` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains messages for the Content Manager messaging system.';
+  `messageread` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains messages for the Content Manager messaging system.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -4547,8 +4585,8 @@ CREATE TABLE `srv37029_ufregru_user_messages` (
 -- Структура таблицы `srv37029_ufregru_user_roles`
 --
 
-CREATE TABLE `srv37029_ufregru_user_roles` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_user_roles` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT '',
   `frames` int(1) NOT NULL DEFAULT '0',
@@ -4618,8 +4656,9 @@ CREATE TABLE `srv37029_ufregru_user_roles` (
   `view_unpublished` int(1) NOT NULL DEFAULT '0',
   `import_static` int(1) NOT NULL DEFAULT '0',
   `export_static` int(1) NOT NULL DEFAULT '0',
-  `remove_locks` int(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains information describing the user roles.';
+  `remove_locks` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Contains information describing the user roles.' AUTO_INCREMENT=4 ;
 
 --
 -- Дамп данных таблицы `srv37029_ufregru_user_roles`
@@ -4636,10 +4675,13 @@ INSERT INTO `srv37029_ufregru_user_roles` (`id`, `name`, `description`, `frames`
 -- Структура таблицы `srv37029_ufregru_user_settings`
 --
 
-CREATE TABLE `srv37029_ufregru_user_settings` (
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_user_settings` (
   `user` int(11) NOT NULL,
   `setting_name` varchar(50) NOT NULL DEFAULT '',
-  `setting_value` text
+  `setting_value` text,
+  PRIMARY KEY (`user`,`setting_name`),
+  KEY `setting_name` (`setting_name`),
+  KEY `user` (`user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains backend user settings.';
 
 --
@@ -4655,11 +4697,12 @@ INSERT INTO `srv37029_ufregru_user_settings` (`user`, `setting_name`, `setting_v
 -- Структура таблицы `srv37029_ufregru_webgroup_access`
 --
 
-CREATE TABLE `srv37029_ufregru_webgroup_access` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_webgroup_access` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `webgroup` int(10) NOT NULL DEFAULT '0',
-  `documentgroup` int(10) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for web access permissions.';
+  `documentgroup` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for web access permissions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -4667,10 +4710,12 @@ CREATE TABLE `srv37029_ufregru_webgroup_access` (
 -- Структура таблицы `srv37029_ufregru_webgroup_names`
 --
 
-CREATE TABLE `srv37029_ufregru_webgroup_names` (
-  `id` int(10) NOT NULL,
-  `name` varchar(255) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for web access permissions.';
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_webgroup_names` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for web access permissions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -4678,11 +4723,13 @@ CREATE TABLE `srv37029_ufregru_webgroup_names` (
 -- Структура таблицы `srv37029_ufregru_web_groups`
 --
 
-CREATE TABLE `srv37029_ufregru_web_groups` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_web_groups` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `webgroup` int(10) NOT NULL DEFAULT '0',
-  `webuser` int(10) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for web access permissions.';
+  `webuser` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ix_group_user` (`webgroup`,`webuser`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains data used for web access permissions.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -4690,12 +4737,14 @@ CREATE TABLE `srv37029_ufregru_web_groups` (
 -- Структура таблицы `srv37029_ufregru_web_users`
 --
 
-CREATE TABLE `srv37029_ufregru_web_users` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_web_users` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL DEFAULT '',
   `password` varchar(100) NOT NULL DEFAULT '',
-  `cachepwd` varchar(100) NOT NULL DEFAULT '' COMMENT 'Store new unconfirmed password'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `cachepwd` varchar(100) NOT NULL DEFAULT '' COMMENT 'Store new unconfirmed password',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -4703,8 +4752,8 @@ CREATE TABLE `srv37029_ufregru_web_users` (
 -- Структура таблицы `srv37029_ufregru_web_user_attributes`
 --
 
-CREATE TABLE `srv37029_ufregru_web_user_attributes` (
-  `id` int(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_web_user_attributes` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `internalKey` int(10) NOT NULL DEFAULT '0',
   `fullname` varchar(100) NOT NULL DEFAULT '',
   `role` int(10) NOT NULL DEFAULT '0',
@@ -4728,8 +4777,10 @@ CREATE TABLE `srv37029_ufregru_web_user_attributes` (
   `zip` varchar(25) NOT NULL DEFAULT '',
   `fax` varchar(100) NOT NULL DEFAULT '',
   `photo` varchar(255) NOT NULL DEFAULT '' COMMENT 'link to photo',
-  `comment` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains information for web users.';
+  `comment` text,
+  PRIMARY KEY (`id`),
+  KEY `userid` (`internalKey`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains information for web users.' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -4737,448 +4788,15 @@ CREATE TABLE `srv37029_ufregru_web_user_attributes` (
 -- Структура таблицы `srv37029_ufregru_web_user_settings`
 --
 
-CREATE TABLE `srv37029_ufregru_web_user_settings` (
+CREATE TABLE IF NOT EXISTS `srv37029_ufregru_web_user_settings` (
   `webuser` int(11) NOT NULL,
   `setting_name` varchar(50) NOT NULL DEFAULT '',
-  `setting_value` text
+  `setting_value` text,
+  PRIMARY KEY (`webuser`,`setting_name`),
+  KEY `setting_name` (`setting_name`),
+  KEY `webuserid` (`webuser`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Contains web user settings.';
 
---
--- Индексы сохранённых таблиц
---
-
---
--- Индексы таблицы `srv37029_ufregru_active_users`
---
-ALTER TABLE `srv37029_ufregru_active_users`
-  ADD PRIMARY KEY (`internalKey`);
-
---
--- Индексы таблицы `srv37029_ufregru_categories`
---
-ALTER TABLE `srv37029_ufregru_categories`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_documentgroup_names`
---
-ALTER TABLE `srv37029_ufregru_documentgroup_names`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Индексы таблицы `srv37029_ufregru_document_groups`
---
-ALTER TABLE `srv37029_ufregru_document_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `document` (`document`),
-  ADD KEY `document_group` (`document_group`);
-
---
--- Индексы таблицы `srv37029_ufregru_event_log`
---
-ALTER TABLE `srv37029_ufregru_event_log`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user` (`user`);
-
---
--- Индексы таблицы `srv37029_ufregru_items`
---
-ALTER TABLE `srv37029_ufregru_items`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_keyword_xref`
---
-ALTER TABLE `srv37029_ufregru_keyword_xref`
-  ADD KEY `content_id` (`content_id`),
-  ADD KEY `keyword_id` (`keyword_id`);
-
---
--- Индексы таблицы `srv37029_ufregru_manager_log`
---
-ALTER TABLE `srv37029_ufregru_manager_log`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_manager_users`
---
-ALTER TABLE `srv37029_ufregru_manager_users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`);
-
---
--- Индексы таблицы `srv37029_ufregru_membergroup_access`
---
-ALTER TABLE `srv37029_ufregru_membergroup_access`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_membergroup_names`
---
-ALTER TABLE `srv37029_ufregru_membergroup_names`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Индексы таблицы `srv37029_ufregru_member_groups`
---
-ALTER TABLE `srv37029_ufregru_member_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `ix_group_member` (`user_group`,`member`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_content`
---
-ALTER TABLE `srv37029_ufregru_site_content`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`),
-  ADD KEY `parent` (`parent`),
-  ADD KEY `aliasidx` (`alias`),
-  ADD KEY `typeidx` (`type`);
-ALTER TABLE `srv37029_ufregru_site_content` ADD FULLTEXT KEY `content_ft_idx` (`pagetitle`,`description`,`content`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_content_metatags`
---
-ALTER TABLE `srv37029_ufregru_site_content_metatags`
-  ADD KEY `content_id` (`content_id`),
-  ADD KEY `metatag_id` (`metatag_id`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_htmlsnippets`
---
-ALTER TABLE `srv37029_ufregru_site_htmlsnippets`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_keywords`
---
-ALTER TABLE `srv37029_ufregru_site_keywords`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `keyword` (`keyword`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_metatags`
---
-ALTER TABLE `srv37029_ufregru_site_metatags`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_modules`
---
-ALTER TABLE `srv37029_ufregru_site_modules`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_module_access`
---
-ALTER TABLE `srv37029_ufregru_site_module_access`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_module_depobj`
---
-ALTER TABLE `srv37029_ufregru_site_module_depobj`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_plugins`
---
-ALTER TABLE `srv37029_ufregru_site_plugins`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_plugin_events`
---
-ALTER TABLE `srv37029_ufregru_site_plugin_events`
-  ADD PRIMARY KEY (`pluginid`,`evtid`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_snippets`
---
-ALTER TABLE `srv37029_ufregru_site_snippets`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_templates`
---
-ALTER TABLE `srv37029_ufregru_site_templates`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_tmplvars`
---
-ALTER TABLE `srv37029_ufregru_site_tmplvars`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `indx_rank` (`rank`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_tmplvar_access`
---
-ALTER TABLE `srv37029_ufregru_site_tmplvar_access`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_tmplvar_contentvalues`
---
-ALTER TABLE `srv37029_ufregru_site_tmplvar_contentvalues`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_tmplvarid` (`tmplvarid`),
-  ADD KEY `idx_id` (`contentid`);
-ALTER TABLE `srv37029_ufregru_site_tmplvar_contentvalues` ADD FULLTEXT KEY `value_ft_idx` (`value`);
-
---
--- Индексы таблицы `srv37029_ufregru_site_tmplvar_templates`
---
-ALTER TABLE `srv37029_ufregru_site_tmplvar_templates`
-  ADD PRIMARY KEY (`tmplvarid`,`templateid`);
-
---
--- Индексы таблицы `srv37029_ufregru_system_eventnames`
---
-ALTER TABLE `srv37029_ufregru_system_eventnames`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_system_settings`
---
-ALTER TABLE `srv37029_ufregru_system_settings`
-  ADD PRIMARY KEY (`setting_name`);
-
---
--- Индексы таблицы `srv37029_ufregru_user_attributes`
---
-ALTER TABLE `srv37029_ufregru_user_attributes`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `userid` (`internalKey`);
-
---
--- Индексы таблицы `srv37029_ufregru_user_messages`
---
-ALTER TABLE `srv37029_ufregru_user_messages`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_user_roles`
---
-ALTER TABLE `srv37029_ufregru_user_roles`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_user_settings`
---
-ALTER TABLE `srv37029_ufregru_user_settings`
-  ADD PRIMARY KEY (`user`,`setting_name`),
-  ADD KEY `setting_name` (`setting_name`),
-  ADD KEY `user` (`user`);
-
---
--- Индексы таблицы `srv37029_ufregru_webgroup_access`
---
-ALTER TABLE `srv37029_ufregru_webgroup_access`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `srv37029_ufregru_webgroup_names`
---
-ALTER TABLE `srv37029_ufregru_webgroup_names`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Индексы таблицы `srv37029_ufregru_web_groups`
---
-ALTER TABLE `srv37029_ufregru_web_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `ix_group_user` (`webgroup`,`webuser`);
-
---
--- Индексы таблицы `srv37029_ufregru_web_users`
---
-ALTER TABLE `srv37029_ufregru_web_users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`);
-
---
--- Индексы таблицы `srv37029_ufregru_web_user_attributes`
---
-ALTER TABLE `srv37029_ufregru_web_user_attributes`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `userid` (`internalKey`);
-
---
--- Индексы таблицы `srv37029_ufregru_web_user_settings`
---
-ALTER TABLE `srv37029_ufregru_web_user_settings`
-  ADD PRIMARY KEY (`webuser`,`setting_name`),
-  ADD KEY `setting_name` (`setting_name`),
-  ADD KEY `webuserid` (`webuser`);
-
---
--- AUTO_INCREMENT для сохранённых таблиц
---
-
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_categories`
---
-ALTER TABLE `srv37029_ufregru_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_documentgroup_names`
---
-ALTER TABLE `srv37029_ufregru_documentgroup_names`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_document_groups`
---
-ALTER TABLE `srv37029_ufregru_document_groups`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_event_log`
---
-ALTER TABLE `srv37029_ufregru_event_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=197;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_items`
---
-ALTER TABLE `srv37029_ufregru_items`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_manager_log`
---
-ALTER TABLE `srv37029_ufregru_manager_log`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6249;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_manager_users`
---
-ALTER TABLE `srv37029_ufregru_manager_users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_membergroup_access`
---
-ALTER TABLE `srv37029_ufregru_membergroup_access`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_membergroup_names`
---
-ALTER TABLE `srv37029_ufregru_membergroup_names`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_member_groups`
---
-ALTER TABLE `srv37029_ufregru_member_groups`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_content`
---
-ALTER TABLE `srv37029_ufregru_site_content`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_htmlsnippets`
---
-ALTER TABLE `srv37029_ufregru_site_htmlsnippets`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_keywords`
---
-ALTER TABLE `srv37029_ufregru_site_keywords`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_metatags`
---
-ALTER TABLE `srv37029_ufregru_site_metatags`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_modules`
---
-ALTER TABLE `srv37029_ufregru_site_modules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_module_access`
---
-ALTER TABLE `srv37029_ufregru_site_module_access`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_module_depobj`
---
-ALTER TABLE `srv37029_ufregru_site_module_depobj`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_plugins`
---
-ALTER TABLE `srv37029_ufregru_site_plugins`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_snippets`
---
-ALTER TABLE `srv37029_ufregru_site_snippets`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_templates`
---
-ALTER TABLE `srv37029_ufregru_site_templates`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_tmplvars`
---
-ALTER TABLE `srv37029_ufregru_site_tmplvars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_tmplvar_access`
---
-ALTER TABLE `srv37029_ufregru_site_tmplvar_access`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_site_tmplvar_contentvalues`
---
-ALTER TABLE `srv37029_ufregru_site_tmplvar_contentvalues`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_system_eventnames`
---
-ALTER TABLE `srv37029_ufregru_system_eventnames`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_user_attributes`
---
-ALTER TABLE `srv37029_ufregru_user_attributes`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_user_messages`
---
-ALTER TABLE `srv37029_ufregru_user_messages`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_user_roles`
---
-ALTER TABLE `srv37029_ufregru_user_roles`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_webgroup_access`
---
-ALTER TABLE `srv37029_ufregru_webgroup_access`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_webgroup_names`
---
-ALTER TABLE `srv37029_ufregru_webgroup_names`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_web_groups`
---
-ALTER TABLE `srv37029_ufregru_web_groups`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_web_users`
---
-ALTER TABLE `srv37029_ufregru_web_users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT для таблицы `srv37029_ufregru_web_user_attributes`
---
-ALTER TABLE `srv37029_ufregru_web_user_attributes`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
